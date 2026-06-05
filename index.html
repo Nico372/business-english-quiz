@@ -5,406 +5,178 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiz Business English du jour</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    min-height: 100vh;
-    padding: 24px 16px 48px;
-    color: #e0e6f0;
-  }
-
-  .container {
-    max-width: 780px;
-    margin: 0 auto;
-  }
-
-  header {
-    text-align: center;
-    margin-bottom: 36px;
-  }
-
-  header h1 {
-    font-size: clamp(1.5rem, 4vw, 2.2rem);
-    font-weight: 800;
-    color: #ffffff;
-    letter-spacing: -0.5px;
-    line-height: 1.2;
-  }
-
-  header p {
-    margin-top: 10px;
-    font-size: 1rem;
-    color: #a0b0c8;
-  }
-
-  .badge {
-    display: inline-block;
-    background: linear-gradient(90deg, #e94560, #f5a623);
-    color: #fff;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 4px 14px;
-    border-radius: 20px;
-    margin-bottom: 14px;
-  }
-
-  .expressions-panel {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 16px;
-    padding: 20px 24px;
-    margin-bottom: 32px;
-  }
-
-  .expressions-panel h2 {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: #f5a623;
-    margin-bottom: 14px;
-    font-weight: 700;
-  }
-
-  .expr-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 10px;
-  }
-
-  .expr-chip {
-    background: rgba(255,255,255,0.07);
-    border-radius: 10px;
-    padding: 10px 14px;
-  }
-
-  .expr-chip .en {
-    font-weight: 700;
-    color: #7dd3fc;
-    font-size: 0.92rem;
-  }
-
-  .expr-chip .fr {
-    font-size: 0.78rem;
-    color: #94a3b8;
-    margin-top: 2px;
-  }
-
-  .quiz-card {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 18px;
-    padding: 28px 28px 24px;
-    margin-bottom: 22px;
-    transition: border-color 0.3s;
-  }
-
-  .quiz-card.correct { border-color: #22c55e; }
-  .quiz-card.wrong   { border-color: #ef4444; }
-
-  .q-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    margin-bottom: 18px;
-  }
-
-  .q-number {
-    flex-shrink: 0;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #e94560, #f5a623);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 0.9rem;
-    color: #fff;
-  }
-
-  .q-type {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #f5a623;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-
-  .q-text {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #e2e8f0;
-    line-height: 1.5;
-  }
-
-  .q-text em {
-    color: #7dd3fc;
-    font-style: italic;
-  }
-
-  .options {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .option {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: rgba(255,255,255,0.05);
-    border: 2px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    padding: 12px 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-    user-select: none;
-  }
-
-  .option:hover:not(.disabled) {
-    background: rgba(125,211,252,0.1);
-    border-color: #7dd3fc;
-  }
-
-  .option.selected {
-    background: rgba(125,211,252,0.15);
-    border-color: #7dd3fc;
-  }
-
-  .option.disabled { cursor: default; }
-
-  .option.result-correct {
-    background: rgba(34,197,94,0.18);
-    border-color: #22c55e;
-  }
-
-  .option.result-wrong {
-    background: rgba(239,68,68,0.18);
-    border-color: #ef4444;
-  }
-
-  .option-letter {
-    flex-shrink: 0;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #94a3b8;
-    transition: all 0.2s;
-  }
-
-  .option.selected .option-letter {
-    background: #7dd3fc;
-    color: #0f172a;
-  }
-
-  .option.result-correct .option-letter {
-    background: #22c55e;
-    color: #fff;
-  }
-
-  .option.result-wrong .option-letter {
-    background: #ef4444;
-    color: #fff;
-  }
-
-  .option-text {
-    font-size: 0.93rem;
-    color: #cbd5e1;
-    line-height: 1.4;
-  }
-
-  .option.result-correct .option-text,
-  .option.result-wrong .option-text {
-    font-weight: 600;
-  }
-
-  .feedback-msg {
-    margin-top: 14px;
-    padding: 10px 14px;
-    border-radius: 10px;
-    font-size: 0.88rem;
-    font-weight: 600;
-    display: none;
-    line-height: 1.5;
-  }
-
-  .feedback-msg.show { display: block; }
-  .feedback-msg.ok { background: rgba(34,197,94,0.15); color: #86efac; }
-  .feedback-msg.ko { background: rgba(239,68,68,0.15); color: #fca5a5; }
-
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-    justify-content: center;
-    margin-top: 32px;
-  }
-
-  .btn {
-    padding: 14px 36px;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s;
-    letter-spacing: 0.3px;
-  }
-
-  .btn-primary {
-    background: linear-gradient(90deg, #e94560, #f5a623);
-    color: #fff;
-    box-shadow: 0 4px 20px rgba(233,69,96,0.35);
-  }
-
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 26px rgba(233,69,96,0.5); }
-  .btn-primary:active { transform: translateY(0); }
-
-  .btn-secondary {
-    background: rgba(255,255,255,0.08);
-    color: #e2e8f0;
-    border: 2px solid rgba(255,255,255,0.15);
-  }
-
-  .btn-secondary:hover { background: rgba(255,255,255,0.15); }
-
-  .score-panel {
-    display: none;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 18px;
-    padding: 30px 28px;
-    text-align: center;
-    margin-bottom: 28px;
-  }
-
-  .score-panel.show { display: block; }
-
-  .score-label {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #94a3b8;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-
-  .score-value {
-    font-size: 4rem;
-    font-weight: 900;
-    line-height: 1;
-    background: linear-gradient(90deg, #22c55e, #7dd3fc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .score-sub {
-    margin-top: 10px;
-    font-size: 0.95rem;
-    color: #94a3b8;
-  }
-
-  .score-emoji { font-size: 2.5rem; margin-bottom: 10px; }
-
-  @media (max-width: 520px) {
-    .quiz-card { padding: 20px 16px; }
-    .expr-grid { grid-template-columns: 1fr 1fr; }
-  }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
+h1{text-align:center;color:#1a3a5c;font-size:1.4rem;margin-bottom:6px}
+.subtitle{text-align:center;color:#555;font-size:.9rem;margin-bottom:20px}
+.question-block{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.question-text{font-weight:600;margin-bottom:10px;font-size:.95rem;line-height:1.4}
+.options label{display:flex;align-items:flex-start;gap:8px;padding:7px 10px;border-radius:7px;cursor:pointer;font-size:.9rem;margin-bottom:5px;border:1.5px solid #e0e6ee;transition:background .15s}
+.options label:hover{background:#eef3fb}
+.options input[type=radio]{margin-top:3px;accent-color:#1a3a5c;flex-shrink:0}
+.correct{background:#d4edda!important;border-color:#28a745!important;color:#155724}
+.wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24}
+.feedback{font-size:.82rem;margin-top:8px;padding:6px 10px;border-radius:6px;background:#fff8e1;border-left:4px solid #f0ad4e;color:#5a4000}
+.btn{display:block;width:100%;max-width:320px;margin:18px auto 6px;padding:12px;border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s}
+#btnValidate{background:#1a3a5c;color:#fff}
+#btnValidate:hover{background:#24527a}
+#btnReset{background:#e2e8f0;color:#1a3a5c;display:none}
+#btnReset:hover{background:#cdd5e0}
+#score-box{text-align:center;background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;font-size:1.1rem;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.08);display:none}
+.score-good{color:#155724}
+.score-mid{color:#856404}
+.score-bad{color:#721c24}
+em{color:#1a3a5c}
 </style>
 </head>
 <body>
-<div class="container">
-
-  <header>
-    <div class="badge">Business English · Leçon du jour</div>
-    <h1>Quiz Business English du jour</h1>
-    <p>10 expressions — 6 questions — Testez vos connaissances !</p>
-  </header>
-
-  <div class="expressions-panel">
-    <h2>📚 Les expressions du jour</h2>
-    <div class="expr-grid">
-      <div class="expr-chip"><div class="en">Does that work for you?</div><div class="fr">Ça te convient ?</div></div>
-      <div class="expr-chip"><div class="en">To your point</div><div class="fr">Pour rebondir sur ce que tu dis</div></div>
-      <div class="expr-chip"><div class="en">My bad</div><div class="fr">Ma faute</div></div>
-      <div class="expr-chip"><div class="en">Food for thought</div><div class="fr">Matière à réflexion</div></div>
-      <div class="expr-chip"><div class="en">Action items</div><div class="fr">Actions à réaliser</div></div>
-      <div class="expr-chip"><div class="en">Takeaways</div><div class="fr">Points clés à retenir</div></div>
-      <div class="expr-chip"><div class="en">Let's take this offline</div><div class="fr">Parlons-en en dehors de la réunion</div></div>
-      <div class="expr-chip"><div class="en">Let's park that for now</div><div class="fr">Mettons ça de côté</div></div>
-      <div class="expr-chip"><div class="en">To keep it high-level</div><div class="fr">Rester synthétique</div></div>
-      <div class="expr-chip"><div class="en">Wrap-up</div><div class="fr">Conclusion, récapitulatif</div></div>
-    </div>
-  </div>
-
-  <div id="score-panel" class="score-panel">
-    <div class="score-emoji" id="score-emoji">🎉</div>
-    <div class="score-label">Votre score</div>
-    <div class="score-value" id="score-value">0/6</div>
-    <div class="score-sub" id="score-sub"></div>
-  </div>
-
-  <div id="quiz"></div>
-
-  <div class="actions">
-    <button class="btn btn-primary" id="btn-validate" onclick="validate()">Valider mes réponses</button>
-    <button class="btn btn-secondary" id="btn-restart" onclick="restart()" style="display:none">🔄 Recommencer</button>
-  </div>
-
-</div>
-
+<h1>🎓 Quiz Business English du jour</h1>
+<p class="subtitle">Thème : Gérer le temps, recentrer et clore une réunion</p>
+<div id="score-box"></div>
+<div id="quiz"></div>
+<button class="btn" id="btnValidate">Valider mes réponses</button>
+<button class="btn" id="btnReset">🔄 Recommencer</button>
 <script>
 const questions = [
   {
-    type: "Définition",
-    text: 'Que signifie <em>"Food for thought"</em> ?',
-    options: [
-      "Un déjeuner d'affaires informel",
-      "Matière à réflexion",
-      "Un sujet qui crée des tensions",
-      "Une décision urgente à prendre"
+    q: "1. Que signifie <em>\"To circle back\"</em> ?",
+    opts: [
+      "Tourner en rond sans avancer",
+      "Revenir sur un sujet plus tard",
+      "Conclure une réunion immédiatement",
+      "Faire une pause et reprendre demain"
     ],
-    answer: 1,
-    explanation: '<em>"Food for thought"</em> = une idée intéressante à laisser mûrir, sans pression de décision immédiate.'
+    correct: 1,
+    explanation: "<em>To circle back</em> = faire une boucle et revenir sur un point quand on a plus d'informations ou de temps."
   },
   {
-    type: "Traduction",
-    text: 'Quelle expression emploie-t-on pour dire <em>« ma faute »</em> de façon décontractée entre collègues ?',
-    options: [
-      "Fair enough",
-      "Over to you",
-      "My bad",
-      "To your point"
+    q: "2. Quelle expression utiliserais-tu pour dire poliment <strong>« mettons ce sujet en pause »</strong> ?",
+    opts: [
+      "Let's call it a day",
+      "To run overtime",
+      "Can we put a pin in that?",
+      "To loop back"
     ],
-    answer: 2,
-    explanation: '<em>"My bad"</em> est la façon la plus naturelle et informelle de reconnaître une petite erreur en milieu professionnel.'
+    correct: 2,
+    explanation: "<em>Can we put a pin in that?</em> est la façon la plus diplomatique de mettre un sujet en pause sans le rejeter."
   },
   {
-    type: "Phrase à trou",
-    text: 'Complétez la phrase : <em>"This conversation is getting too detailed for the whole team — __________ and discuss it after the meeting."</em>',
-    options: [
-      "let's keep it high-level",
-      "let's take this offline",
-      "let's park that for now",
-      "does that work for you"
+    q: "3. Complète la phrase : <em>\"We've been here two hours and we're really starting to ________ ________. Let's wrap up.\"</em>",
+    opts: [
+      "loop back",
+      "call it a day",
+      "put a pin",
+      "run overtime"
     ],
-    answer: 1,
-    explanation: '<em>"Let\'s take this offline"</em> permet de recentrer une réunion quand la discussion devient trop spécifique pour l\'ensemble du groupe.'
+    correct: 3,
+    explanation: "<em>To run overtime</em> = dépasser l'horaire prévu. C'est l'expression idéale pour signaler qu'une réunion s'éternise."
   },
   {
-    type: "Phrase à trou",
-    text: 'Complétez la phrase : <em>"__________, Marc — I agree that we should test the concept before committing the full budget."</em>',
-    options: [
-      "Wrap-up",
+    q: "4. Complète la phrase : <em>\"Before we end, here are the ________ ________: Claire will finalize the deck, and I'll send the timeline by EOD.\"</em>",
+    opts: [
+      "action items",
+      "loop backs",
+      "pin points",
+      "circle notes"
+    ],
+    correct: 0,
+    explanation: "<em>Action items</em> = les tâches concrètes qui ressortent d'une réunion, ce que chacun doit accomplir."
+  },
+  {
+    q: "5. Quelle est la différence culturelle importante avec <em>\"to table something\"</em> ?",
+    opts: [
+      "Cela signifie toujours reporter le sujet, partout dans le monde",
+      "Aux États-Unis : reporter ; au Royaume-Uni : mettre à l'ordre du jour",
+      "Aux États-Unis : mettre à l'ordre du jour ; au Royaume-Uni : reporter",
+      "Cette expression est exclusivement britannique"
+    ],
+    correct: 1,
+    explanation: "Piège culturel ! <em>To table</em> = reporter en anglais américain, mais = mettre à l'ordre du jour en anglais britannique."
+  },
+  {
+    q: "6. Quelle expression emploierais-tu pour dire <strong>« arrêtons pour aujourd'hui »</strong> en fin de réunion ?",
+    opts: [
+      "Let's postpone the meeting",
+      "Can we put a pin in that?",
+      "To your point",
+      "Let's call it a day"
+    ],
+    correct: 3,
+    explanation: "<em>Let's call it a day</em> = arrêtons pour aujourd'hui. Parfait pour clore une réunion ou une journée de travail."
+  }
+];
+
+function render() {
+  const quiz = document.getElementById('quiz');
+  quiz.innerHTML = '';
+  questions.forEach((q, i) => {
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.id = 'q' + i;
+    let optsHTML = '';
+    q.opts.forEach((opt, j) => {
+      optsHTML += `<label id="lbl${i}_${j}">
+        <input type="radio" name="q${i}" value="${j}"> ${opt}
+      </label>`;
+    });
+    block.innerHTML = `<div class="question-text">${q.q}</div>
+      <div class="options" id="opts${i}">${optsHTML}</div>`;
+    quiz.appendChild(block);
+  });
+}
+
+function validate() {
+  let score = 0;
+  let allAnswered = true;
+  questions.forEach((q, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    const block = document.getElementById('q' + i);
+    let feedback = block.querySelector('.feedback');
+    if (feedback) feedback.remove();
+    if (!selected) { allAnswered = false; return; }
+    const val = parseInt(selected.value);
+    const labels = block.querySelectorAll('label');
+    labels.forEach((lbl, j) => {
+      lbl.classList.remove('correct', 'wrong');
+      const inp = lbl.querySelector('input');
+      inp.disabled = true;
+      if (j === q.correct) lbl.classList.add('correct');
+      else if (j === val && val !== q.correct) lbl.classList.add('wrong');
+    });
+    if (val === q.correct) {
+      score++;
+    } else {
+      const fb = document.createElement('div');
+      fb.className = 'feedback';
+      fb.innerHTML = '💡 ' + q.explanation;
+      block.appendChild(fb);
+    }
+  });
+  if (!allAnswered) {
+    alert('⚠️ Merci de répondre à toutes les questions avant de valider.');
+    return;
+  }
+  const box = document.getElementById('score-box');
+  box.style.display = 'block';
+  let cls = score >= 5 ? 'score-good' : score >= 3 ? 'score-mid' : 'score-bad';
+  let msg = score === 6 ? '🏆 Parfait !' : score >= 4 ? '👍 Bien joué !' : '💪 Continue à t\'entraîner !';
+  box.innerHTML = `<span class="${cls}">Score : ${score} / ${questions.length} — ${msg}</span>`;
+  document.getElementById('btnValidate').style.display = 'none';
+  document.getElementById('btnReset').style.display = 'block';
+  box.scrollIntoView({behavior:'smooth'});
+}
+
+function reset() {
+  document.getElementById('score-box').style.display = 'none';
+  document.getElementById('btnValidate').style.display = 'block';
+  document.getElementById('btnReset').style.display = 'none';
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.getElementById('btnValidate').addEventListener('click', validate);
+document.getElementById('btnReset').addEventListener('click', reset);
+render();
+</script>
+</body>
+</html>
