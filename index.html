@@ -6,176 +6,193 @@
 <title>Quiz Business English du jour</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
-h1{text-align:center;color:#1a3a5c;font-size:1.4rem;margin-bottom:6px}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#222;min-height:100vh;padding:16px}
+h1{text-align:center;color:#1a3a5c;font-size:1.4rem;margin-bottom:4px}
 .subtitle{text-align:center;color:#555;font-size:.9rem;margin-bottom:20px}
-.question-block{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
-.question-text{font-weight:600;margin-bottom:10px;font-size:.95rem;line-height:1.4}
-.options label{display:flex;align-items:flex-start;gap:8px;padding:7px 10px;border-radius:7px;cursor:pointer;font-size:.9rem;margin-bottom:5px;border:1.5px solid #e0e6ee;transition:background .15s}
-.options label:hover{background:#eef3fb}
-.options input[type=radio]{margin-top:3px;accent-color:#1a3a5c;flex-shrink:0}
-.correct{background:#d4edda!important;border-color:#28a745!important;color:#155724}
-.wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24}
-.feedback{font-size:.82rem;margin-top:8px;padding:6px 10px;border-radius:6px;background:#fff8e1;border-left:4px solid #f0ad4e;color:#5a4000}
-.btn{display:block;width:100%;max-width:320px;margin:18px auto 6px;padding:12px;border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s}
-#btnValidate{background:#1a3a5c;color:#fff}
-#btnValidate:hover{background:#24527a}
-#btnReset{background:#e2e8f0;color:#1a3a5c;display:none}
-#btnReset:hover{background:#cdd5e0}
-#score-box{text-align:center;background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;font-size:1.1rem;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.08);display:none}
-.score-good{color:#155724}
-.score-mid{color:#856404}
-.score-bad{color:#721c24}
-em{color:#1a3a5c}
+#quiz{max-width:680px;margin:0 auto}
+.card{background:#fff;border-radius:12px;padding:18px 20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.qnum{font-size:.75rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.qtext{font-size:1rem;font-weight:600;color:#1a3a5c;margin-bottom:12px;line-height:1.4}
+.options label{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:8px;margin-bottom:7px;cursor:pointer;border:2px solid #e2e8f0;transition:border-color .15s,background .15s;font-size:.95rem;line-height:1.35}
+.options label:hover{border-color:#4a90d9;background:#eef5ff}
+.options input[type=radio]{accent-color:#4a90d9;margin-top:3px;flex-shrink:0}
+.correct{border-color:#22c55e!important;background:#f0fdf4!important}
+.wrong{border-color:#ef4444!important;background:#fff1f1!important}
+.answer-key{margin-top:8px;font-size:.85rem;color:#16a34a;font-weight:600}
+.answer-wrong{color:#dc2626}
+.score-box{background:#1a3a5c;color:#fff;border-radius:12px;padding:18px 20px;text-align:center;margin-bottom:20px;max-width:680px;margin-left:auto;margin-right:auto}
+.score-box h2{font-size:1.6rem;margin-bottom:4px}
+.score-box p{font-size:.95rem;opacity:.85}
+.btn{display:block;width:100%;max-width:680px;margin:0 auto 12px;padding:14px;font-size:1rem;font-weight:700;border:none;border-radius:10px;cursor:pointer;transition:opacity .15s}
+.btn-validate{background:#4a90d9;color:#fff}
+.btn-validate:hover{opacity:.88}
+.btn-reset{background:#e2e8f0;color:#1a3a5c}
+.btn-reset:hover{opacity:.8}
+.hidden{display:none}
+em{font-style:italic;color:#1a3a5c}
 </style>
 </head>
 <body>
-<h1>🎓 Quiz Business English du jour</h1>
-<p class="subtitle">Thème : Gérer le temps, recentrer et clore une réunion</p>
-<div id="score-box"></div>
-<div id="quiz"></div>
-<button class="btn" id="btnValidate">Valider mes réponses</button>
-<button class="btn" id="btnReset">🔄 Recommencer</button>
+<div id="quiz-wrap">
+  <h1>🎓 Quiz Business English du jour</h1>
+  <p class="subtitle">Thème : Dire au revoir &amp; conclure avec style — 6 questions</p>
+  <div id="quiz"></div>
+  <button class="btn btn-validate" id="btnValidate">✅ Valider mes réponses</button>
+  <button class="btn btn-reset hidden" id="btnReset">🔄 Recommencer</button>
+</div>
+
 <script>
 const questions = [
   {
-    q: "1. Que signifie <em>\"To circle back\"</em> ?",
-    opts: [
-      "Tourner en rond sans avancer",
-      "Revenir sur un sujet plus tard",
-      "Conclure une réunion immédiatement",
-      "Faire une pause et reprendre demain"
+    type: "sens",
+    text: "Que signifie <em>\"Gotta bounce\"</em> ?",
+    options: [
+      "Je dois rebondir sur ce point et y répondre",
+      "Je file / je dois y aller (informel, entre collègues proches)",
+      "Je suis complètement débordé et indisponible",
+      "Remettons ce sujet à plus tard"
     ],
-    correct: 1,
-    explanation: "<em>To circle back</em> = faire une boucle et revenir sur un point quand on a plus d'informations ou de temps."
+    correct: 1
   },
   {
-    q: "2. Quelle expression utiliserais-tu pour dire poliment <strong>« mettons ce sujet en pause »</strong> ?",
-    opts: [
+    type: "choix",
+    text: "Quelle expression utiliserais-tu pour conclure un <strong>webinaire</strong> de manière élégante et tournée vers l'avenir ?",
+    options: [
+      "Gotta bounce",
+      "I'm off",
+      "Until next time",
+      "Can we put a pin in that?"
+    ],
+    correct: 2
+  },
+  {
+    type: "trou",
+    text: "Complète la phrase : <em>\"Before we launch the campaign, let's make sure we're all ________ ________ ________ regarding the deliverables.\"</em>",
+    options: [
+      "calling it a day",
+      "on the same page",
+      "putting a pin in that",
+      "circling back around"
+    ],
+    correct: 1
+  },
+  {
+    type: "diff",
+    text: "Quelle est la différence entre <em>\"See you soon\"</em> et <em>\"Speak soon\"</em> ?",
+    options: [
+      "Il n'y a aucune différence, les deux sont interchangeables",
+      "<em>Speak soon</em> est plus formel et réservé aux emails officiels",
+      "<em>See you soon</em> s'utilise en personne ; <em>Speak soon</em> est adapté aux échanges à distance (call, email)",
+      "<em>See you soon</em> est britannique, <em>Speak soon</em> est américain"
+    ],
+    correct: 2
+  },
+  {
+    type: "traduction",
+    text: "Quelle expression anglaise correspond à <strong>« revenir sur un sujet plus tard »</strong> ?",
+    options: [
       "Let's call it a day",
-      "To run overtime",
-      "Can we put a pin in that?",
-      "To loop back"
+      "To circle back",
+      "Take care",
+      "Have a good one"
     ],
-    correct: 2,
-    explanation: "<em>Can we put a pin in that?</em> est la façon la plus diplomatique de mettre un sujet en pause sans le rejeter."
+    correct: 1
   },
   {
-    q: "3. Complète la phrase : <em>\"We've been here two hours and we're really starting to ________ ________. Let's wrap up.\"</em>",
-    opts: [
-      "loop back",
-      "call it a day",
-      "put a pin",
-      "run overtime"
+    type: "contexte",
+    text: "Ton collègue britannique termine son email par <em>\"Cheers!\"</em>. Qu'est-ce que cela signifie dans ce contexte ?",
+    options: [
+      "Il t'invite à trinquer lors d'un événement d'entreprise",
+      "C'est une erreur, ce mot ne s'utilise pas en email professionnel",
+      "C'est une façon décontractée de dire merci ou au revoir, très courante au Royaume-Uni",
+      "Il exprime sa frustration de manière polie"
     ],
-    correct: 3,
-    explanation: "<em>To run overtime</em> = dépasser l'horaire prévu. C'est l'expression idéale pour signaler qu'une réunion s'éternise."
-  },
-  {
-    q: "4. Complète la phrase : <em>\"Before we end, here are the ________ ________: Claire will finalize the deck, and I'll send the timeline by EOD.\"</em>",
-    opts: [
-      "action items",
-      "loop backs",
-      "pin points",
-      "circle notes"
-    ],
-    correct: 0,
-    explanation: "<em>Action items</em> = les tâches concrètes qui ressortent d'une réunion, ce que chacun doit accomplir."
-  },
-  {
-    q: "5. Quelle est la différence culturelle importante avec <em>\"to table something\"</em> ?",
-    opts: [
-      "Cela signifie toujours reporter le sujet, partout dans le monde",
-      "Aux États-Unis : reporter ; au Royaume-Uni : mettre à l'ordre du jour",
-      "Aux États-Unis : mettre à l'ordre du jour ; au Royaume-Uni : reporter",
-      "Cette expression est exclusivement britannique"
-    ],
-    correct: 1,
-    explanation: "Piège culturel ! <em>To table</em> = reporter en anglais américain, mais = mettre à l'ordre du jour en anglais britannique."
-  },
-  {
-    q: "6. Quelle expression emploierais-tu pour dire <strong>« arrêtons pour aujourd'hui »</strong> en fin de réunion ?",
-    opts: [
-      "Let's postpone the meeting",
-      "Can we put a pin in that?",
-      "To your point",
-      "Let's call it a day"
-    ],
-    correct: 3,
-    explanation: "<em>Let's call it a day</em> = arrêtons pour aujourd'hui. Parfait pour clore une réunion ou une journée de travail."
+    correct: 2
   }
 ];
 
+const correctAnswers = ["Je file / je dois y aller (informel, entre collègues proches)", "Until next time", "on the same page", "<em>See you soon</em> s'utilise en personne ; <em>Speak soon</em> est adapté aux échanges à distance (call, email)", "To circle back", "C'est une façon décontractée de dire merci ou au revoir, très courante au Royaume-Uni"];
+
 function render() {
-  const quiz = document.getElementById('quiz');
-  quiz.innerHTML = '';
+  const container = document.getElementById('quiz');
+  container.innerHTML = '';
   questions.forEach((q, i) => {
-    const block = document.createElement('div');
-    block.className = 'question-block';
-    block.id = 'q' + i;
-    let optsHTML = '';
-    q.opts.forEach((opt, j) => {
-      optsHTML += `<label id="lbl${i}_${j}">
-        <input type="radio" name="q${i}" value="${j}"> ${opt}
-      </label>`;
-    });
-    block.innerHTML = `<div class="question-text">${q.q}</div>
-      <div class="options" id="opts${i}">${optsHTML}</div>`;
-    quiz.appendChild(block);
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<div class="qnum">Question ${i + 1} / ${questions.length}</div>
+      <div class="qtext">${q.text}</div>
+      <div class="options" id="opts-${i}">
+        ${q.options.map((opt, j) => `
+          <label id="lbl-${i}-${j}">
+            <input type="radio" name="q${i}" value="${j}"> ${opt}
+          </label>`).join('')}
+      </div>
+      <div class="answer-key hidden" id="ak-${i}"></div>`;
+    container.appendChild(card);
   });
 }
 
-function validate() {
+document.getElementById('btnValidate').addEventListener('click', () => {
   let score = 0;
   let allAnswered = true;
+
   questions.forEach((q, i) => {
     const selected = document.querySelector(`input[name="q${i}"]:checked`);
-    const block = document.getElementById('q' + i);
-    let feedback = block.querySelector('.feedback');
-    if (feedback) feedback.remove();
     if (!selected) { allAnswered = false; return; }
+
     const val = parseInt(selected.value);
-    const labels = block.querySelectorAll('label');
+    const labels = document.querySelectorAll(`#opts-${i} label`);
+    const ak = document.getElementById(`ak-${i}`);
+
     labels.forEach((lbl, j) => {
-      lbl.classList.remove('correct', 'wrong');
-      const inp = lbl.querySelector('input');
-      inp.disabled = true;
+      lbl.style.pointerEvents = 'none';
       if (j === q.correct) lbl.classList.add('correct');
-      else if (j === val && val !== q.correct) lbl.classList.add('wrong');
+      if (j === val && val !== q.correct) lbl.classList.add('wrong');
     });
+
     if (val === q.correct) {
       score++;
+      ak.innerHTML = '✅ Bonne réponse !';
+      ak.className = 'answer-key';
     } else {
-      const fb = document.createElement('div');
-      fb.className = 'feedback';
-      fb.innerHTML = '💡 ' + q.explanation;
-      block.appendChild(fb);
+      ak.innerHTML = `❌ Mauvaise réponse. La bonne réponse était : <strong>${q.options[q.correct]}</strong>`;
+      ak.className = 'answer-key answer-wrong';
     }
+    ak.classList.remove('hidden');
   });
+
   if (!allAnswered) {
-    alert('⚠️ Merci de répondre à toutes les questions avant de valider.');
+    alert('⚠️ Merci de répondre à toutes les questions avant de valider !');
     return;
   }
-  const box = document.getElementById('score-box');
-  box.style.display = 'block';
-  let cls = score >= 5 ? 'score-good' : score >= 3 ? 'score-mid' : 'score-bad';
-  let msg = score === 6 ? '🏆 Parfait !' : score >= 4 ? '👍 Bien joué !' : '💪 Continue à t\'entraîner !';
-  box.innerHTML = `<span class="${cls}">Score : ${score} / ${questions.length} — ${msg}</span>`;
-  document.getElementById('btnValidate').style.display = 'none';
-  document.getElementById('btnReset').style.display = 'block';
-  box.scrollIntoView({behavior:'smooth'});
-}
 
-function reset() {
-  document.getElementById('score-box').style.display = 'none';
-  document.getElementById('btnValidate').style.display = 'block';
-  document.getElementById('btnReset').style.display = 'none';
+  const wrap = document.getElementById('quiz-wrap');
+  const existing = document.getElementById('score-box');
+  if (existing) existing.remove();
+
+  const emoji = score === 6 ? '🏆' : score >= 4 ? '👍' : '💪';
+  const msg = score === 6 ? 'Parfait ! Excellente maîtrise !' : score >= 4 ? 'Très bien, continuez comme ça !' : 'Pas de panique, révisez et réessayez !';
+
+  const box = document.createElement('div');
+  box.className = 'score-box';
+  box.id = 'score-box';
+  box.innerHTML = `<h2>${emoji} ${score} / ${questions.length}</h2><p>${msg}</p>`;
+  wrap.insertBefore(box, document.getElementById('quiz'));
+
+  document.getElementById('btnValidate').classList.add('hidden');
+  document.getElementById('btnReset').classList.remove('hidden');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+});
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  const existing = document.getElementById('score-box');
+  if (existing) existing.remove();
   render();
-  window.scrollTo({top:0,behavior:'smooth'});
-}
+  document.getElementById('btnValidate').classList.remove('hidden');
+  document.getElementById('btnReset').classList.add('hidden');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+});
 
-document.getElementById('btnValidate').addEventListener('click', validate);
-document.getElementById('btnReset').addEventListener('click', reset);
 render();
 </script>
 </body>
