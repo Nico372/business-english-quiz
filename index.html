@@ -1,1 +1,410 @@
-<!DOCTYPE html><html><body><p>Le quiz du jour apparaîtra ici après la première exécution de Make.</p></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Business English du jour</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    min-height: 100vh;
+    padding: 24px 16px 48px;
+    color: #e0e6f0;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  header h1 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+  }
+
+  header p {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #a0b0c8;
+  }
+
+  .badge {
+    display: inline-block;
+    background: linear-gradient(90deg, #e94560, #f5a623);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+
+  .expressions-panel {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+  }
+
+  .expressions-panel h2 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #f5a623;
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+
+  .expr-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+  }
+
+  .expr-chip {
+    background: rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 10px 14px;
+  }
+
+  .expr-chip .en {
+    font-weight: 700;
+    color: #7dd3fc;
+    font-size: 0.92rem;
+  }
+
+  .expr-chip .fr {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    margin-top: 2px;
+  }
+
+  .quiz-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 18px;
+    padding: 28px 28px 24px;
+    margin-bottom: 22px;
+    transition: border-color 0.3s;
+  }
+
+  .quiz-card.correct { border-color: #22c55e; }
+  .quiz-card.wrong   { border-color: #ef4444; }
+
+  .q-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .q-number {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e94560, #f5a623);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: #fff;
+  }
+
+  .q-type {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #f5a623;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .q-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    line-height: 1.5;
+  }
+
+  .q-text em {
+    color: #7dd3fc;
+    font-style: italic;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .option:hover:not(.disabled) {
+    background: rgba(125,211,252,0.1);
+    border-color: #7dd3fc;
+  }
+
+  .option.selected {
+    background: rgba(125,211,252,0.15);
+    border-color: #7dd3fc;
+  }
+
+  .option.disabled { cursor: default; }
+
+  .option.result-correct {
+    background: rgba(34,197,94,0.18);
+    border-color: #22c55e;
+  }
+
+  .option.result-wrong {
+    background: rgba(239,68,68,0.18);
+    border-color: #ef4444;
+  }
+
+  .option-letter {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #94a3b8;
+    transition: all 0.2s;
+  }
+
+  .option.selected .option-letter {
+    background: #7dd3fc;
+    color: #0f172a;
+  }
+
+  .option.result-correct .option-letter {
+    background: #22c55e;
+    color: #fff;
+  }
+
+  .option.result-wrong .option-letter {
+    background: #ef4444;
+    color: #fff;
+  }
+
+  .option-text {
+    font-size: 0.93rem;
+    color: #cbd5e1;
+    line-height: 1.4;
+  }
+
+  .option.result-correct .option-text,
+  .option.result-wrong .option-text {
+    font-weight: 600;
+  }
+
+  .feedback-msg {
+    margin-top: 14px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    display: none;
+    line-height: 1.5;
+  }
+
+  .feedback-msg.show { display: block; }
+  .feedback-msg.ok { background: rgba(34,197,94,0.15); color: #86efac; }
+  .feedback-msg.ko { background: rgba(239,68,68,0.15); color: #fca5a5; }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+    margin-top: 32px;
+  }
+
+  .btn {
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(90deg, #e94560, #f5a623);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(233,69,96,0.35);
+  }
+
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 26px rgba(233,69,96,0.5); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.08);
+    color: #e2e8f0;
+    border: 2px solid rgba(255,255,255,0.15);
+  }
+
+  .btn-secondary:hover { background: rgba(255,255,255,0.15); }
+
+  .score-panel {
+    display: none;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 18px;
+    padding: 30px 28px;
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .score-panel.show { display: block; }
+
+  .score-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #94a3b8;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .score-value {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(90deg, #22c55e, #7dd3fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .score-sub {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: #94a3b8;
+  }
+
+  .score-emoji { font-size: 2.5rem; margin-bottom: 10px; }
+
+  @media (max-width: 520px) {
+    .quiz-card { padding: 20px 16px; }
+    .expr-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="badge">Business English · Leçon du jour</div>
+    <h1>Quiz Business English du jour</h1>
+    <p>10 expressions — 6 questions — Testez vos connaissances !</p>
+  </header>
+
+  <div class="expressions-panel">
+    <h2>📚 Les expressions du jour</h2>
+    <div class="expr-grid">
+      <div class="expr-chip"><div class="en">Does that work for you?</div><div class="fr">Ça te convient ?</div></div>
+      <div class="expr-chip"><div class="en">To your point</div><div class="fr">Pour rebondir sur ce que tu dis</div></div>
+      <div class="expr-chip"><div class="en">My bad</div><div class="fr">Ma faute</div></div>
+      <div class="expr-chip"><div class="en">Food for thought</div><div class="fr">Matière à réflexion</div></div>
+      <div class="expr-chip"><div class="en">Action items</div><div class="fr">Actions à réaliser</div></div>
+      <div class="expr-chip"><div class="en">Takeaways</div><div class="fr">Points clés à retenir</div></div>
+      <div class="expr-chip"><div class="en">Let's take this offline</div><div class="fr">Parlons-en en dehors de la réunion</div></div>
+      <div class="expr-chip"><div class="en">Let's park that for now</div><div class="fr">Mettons ça de côté</div></div>
+      <div class="expr-chip"><div class="en">To keep it high-level</div><div class="fr">Rester synthétique</div></div>
+      <div class="expr-chip"><div class="en">Wrap-up</div><div class="fr">Conclusion, récapitulatif</div></div>
+    </div>
+  </div>
+
+  <div id="score-panel" class="score-panel">
+    <div class="score-emoji" id="score-emoji">🎉</div>
+    <div class="score-label">Votre score</div>
+    <div class="score-value" id="score-value">0/6</div>
+    <div class="score-sub" id="score-sub"></div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="actions">
+    <button class="btn btn-primary" id="btn-validate" onclick="validate()">Valider mes réponses</button>
+    <button class="btn btn-secondary" id="btn-restart" onclick="restart()" style="display:none">🔄 Recommencer</button>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    type: "Définition",
+    text: 'Que signifie <em>"Food for thought"</em> ?',
+    options: [
+      "Un déjeuner d'affaires informel",
+      "Matière à réflexion",
+      "Un sujet qui crée des tensions",
+      "Une décision urgente à prendre"
+    ],
+    answer: 1,
+    explanation: '<em>"Food for thought"</em> = une idée intéressante à laisser mûrir, sans pression de décision immédiate.'
+  },
+  {
+    type: "Traduction",
+    text: 'Quelle expression emploie-t-on pour dire <em>« ma faute »</em> de façon décontractée entre collègues ?',
+    options: [
+      "Fair enough",
+      "Over to you",
+      "My bad",
+      "To your point"
+    ],
+    answer: 2,
+    explanation: '<em>"My bad"</em> est la façon la plus naturelle et informelle de reconnaître une petite erreur en milieu professionnel.'
+  },
+  {
+    type: "Phrase à trou",
+    text: 'Complétez la phrase : <em>"This conversation is getting too detailed for the whole team — __________ and discuss it after the meeting."</em>',
+    options: [
+      "let's keep it high-level",
+      "let's take this offline",
+      "let's park that for now",
+      "does that work for you"
+    ],
+    answer: 1,
+    explanation: '<em>"Let\'s take this offline"</em> permet de recentrer une réunion quand la discussion devient trop spécifique pour l\'ensemble du groupe.'
+  },
+  {
+    type: "Phrase à trou",
+    text: 'Complétez la phrase : <em>"__________, Marc — I agree that we should test the concept before committing the full budget."</em>',
+    options: [
+      "Wrap-up",
