@@ -7,119 +7,104 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
-h1{text-align:center;color:#1a3a5c;margin-bottom:6px;font-size:1.4em}
-p.subtitle{text-align:center;color:#555;margin-bottom:20px;font-size:.95em}
-.question{background:#fff;border-radius:8px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
-.question p{font-weight:bold;margin-bottom:10px;line-height:1.4}
-label{display:block;padding:8px 10px;border-radius:6px;cursor:pointer;margin-bottom:6px;border:1px solid #ddd;transition:background .2s}
-label:hover{background:#e8f0fe}
-input[type=radio]{margin-right:8px}
-.correct{background:#d4edda!important;border-color:#28a745!important;color:#155724}
-.wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24}
-.answer-info{margin-top:8px;font-size:.88em;color:#1a3a5c;font-style:italic}
-#score-box{background:#1a3a5c;color:#fff;border-radius:8px;padding:16px;text-align:center;font-size:1.2em;margin-bottom:16px;display:none}
-.btn{display:block;width:100%;max-width:320px;margin:0 auto 12px;padding:12px;border:none;border-radius:8px;font-size:1em;cursor:pointer;font-weight:bold}
-#btn-validate{background:#1a3a5c;color:#fff}
-#btn-validate:hover{background:#254d7a}
-#btn-reset{background:#6c757d;color:#fff;display:none}
-#btn-reset:hover{background:#545b62}
-em{font-style:italic}
+h1{text-align:center;color:#1a3c5e;font-size:1.4rem;margin-bottom:6px}
+.subtitle{text-align:center;color:#555;font-size:.9rem;margin-bottom:20px}
+.question{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.q-label{font-weight:bold;margin-bottom:10px;font-size:.95rem}
+.option{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:6px;margin-bottom:6px;cursor:pointer;border:2px solid #dde3ea;transition:border-color .2s}
+.option:hover{border-color:#4a90d9}
+.option input{cursor:pointer}
+.option label{cursor:pointer;font-size:.9rem}
+.correct{background:#e6f9ee;border-color:#27ae60!important}
+.wrong{background:#fdecea;border-color:#e74c3c!important}
+.answer-note{font-size:.82rem;margin-top:6px;color:#444}
+.btn{display:block;width:100%;max-width:320px;margin:10px auto;padding:12px;border:none;border-radius:8px;font-size:1rem;cursor:pointer;font-weight:bold}
+#btn-validate{background:#1a3c5e;color:#fff}
+#btn-validate:hover{background:#254f7a}
+#btn-restart{background:#27ae60;color:#fff;display:none}
+#btn-restart:hover{background:#1e8449}
+#score-box{text-align:center;font-size:1.2rem;font-weight:bold;padding:14px;background:#fff;border-radius:10px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.08);display:none}
 </style>
 </head>
 <body>
-<h1>📝 Quiz Business English du jour</h1>
-<p class="subtitle">Thème : urgence, délais et gestion du temps — 6 questions</p>
+<h1>🎓 Quiz Business English du jour</h1>
+<p class="subtitle">Priorités, charge de travail &amp; productivité — 6 questions</p>
 <div id="score-box"></div>
 <div id="quiz"></div>
 <button class="btn" id="btn-validate">Valider mes réponses</button>
-<button class="btn" id="btn-reset">Recommencer</button>
+<button class="btn" id="btn-restart">Recommencer</button>
 <script>
-const questions = [
-  {
-    q: "Que signifie <em>\"in the nick of time\"</em> ?",
-    options: ["Trop tard pour agir", "Juste à temps, au tout dernier moment", "En avance sur le planning", "Sous pression constante"],
-    answer: 1
-  },
-  {
-    q: "Quelle abréviation utilise-t-on pour dire <em>\"fin de journée\"</em> dans un email professionnel ?",
-    options: ["ASAP", "EOW", "EOD", "FYI"],
-    answer: 2
-  },
-  {
-    q: "Complétez la phrase :<br><em>\"The negotiation went __________ — we finally got the client to sign off late Friday evening.\"</em>",
-    options: ["make-or-break", "down to the wire", "in crunch time", "at your earliest convenience"],
-    answer: 1
-  },
-  {
-    q: "Comment dit-on poliment <em>\"dès que vous pouvez\"</em> dans un email formel ?",
-    options: ["ASAP", "In the nick of time", "At your earliest convenience", "EOW"],
-    answer: 2
-  },
-  {
-    q: "Que signifie <em>\"we're in crunch time\"</em> ?",
-    options: ["On a du temps devant nous", "On est en réunion de bilan", "On est dans une période de pression intense", "On vient de terminer un projet"],
-    answer: 2
-  },
-  {
-    q: "<strong>Révision</strong> — Quelle expression signifie <em>\"approuver formellement sans vraiment examiner\"</em> ?",
-    options: ["To call the shots", "Non-starter", "To rubber-stamp", "To get buy-in"],
-    answer: 2
-  }
+const questions=[
+{type:"mc",q:'Que signifie <em>"in the pipeline"</em> ?',options:["Un projet annulé","Un projet en cours de préparation","Un projet terminé","Un projet suspendu"],correct:1},
+{type:"mc",q:'Quelle expression décrit une tâche mise de côté temporairement ?',options:["On the front burner","Quick win","Rush job","On the back burner"],correct:3},
+{type:"mc",q:'Complétez : <em>"The launch is two weeks early — we\'re actually _____ _____ !"</em>',options:["behind schedule","in the pipeline","ahead of schedule","on the front burner"],correct:2},
+{type:"mc",q:'Que signifie <em>"rush job"</em> ?',options:["Un travail effectué en avance","Un travail délégué à une autre équipe","Un travail fait dans l\'urgence","Un travail annulé en dernière minute"],correct:2},
+{type:"mc",q:'Comment dit-on "accélérer le processus" pour gagner du temps sur un projet ?',options:["To back-burner","To fast-track","To deep dive","To quick win"],correct:1},
+{type:"mc",q:'Révision — Que signifie <em>"blue-sky thinking"</em> ?',options:["Une réflexion stratégique très encadrée","Une réunion de bilan de projet","Une réflexion créative libre, sans contraintes","Une analyse des risques"],correct:2}
 ];
 
-const quizDiv = document.getElementById("quiz");
-const scoreBox = document.getElementById("score-box");
-const btnValidate = document.getElementById("btn-validate");
-const btnReset = document.getElementById("btn-reset");
+const quiz=document.getElementById("quiz");
+const btnValidate=document.getElementById("btn-validate");
+const btnRestart=document.getElementById("btn-restart");
+const scoreBox=document.getElementById("score-box");
 
-function render() {
-  quizDiv.innerHTML = "";
-  scoreBox.style.display = "none";
-  scoreBox.innerHTML = "";
-  btnValidate.style.display = "block";
-  btnReset.style.display = "none";
-  questions.forEach((q, i) => {
-    const div = document.createElement("div");
-    div.className = "question";
-    div.innerHTML = `<p>Q${i+1}. ${q.q}</p>` +
-      q.options.map((opt, j) => `<label id="lbl-${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${opt}</label>`).join("") +
-      `<div class="answer-info" id="info-${i}" style="display:none"></div>`;
-    quizDiv.appendChild(div);
+function render(){
+  quiz.innerHTML="";
+  questions.forEach((q,i)=>{
+    const div=document.createElement("div");
+    div.className="question";
+    div.dataset.index=i;
+    let html=`<div class="q-label">Q${i+1}. ${q.q}</div>`;
+    q.options.forEach((opt,j)=>{
+      html+=`<div class="option" id="opt-${i}-${j}"><input type="radio" name="q${i}" id="r${i}-${j}" value="${j}"><label for="r${i}-${j}">${opt}</label></div>`;
+    });
+    div.innerHTML=html;
+    quiz.appendChild(div);
   });
 }
 
-btnValidate.addEventListener("click", () => {
-  let score = 0;
-  let allAnswered = true;
-  questions.forEach((q, i) => {
-    const selected = document.querySelector(`input[name="q${i}"]:checked`);
-    if (!selected) { allAnswered = false; return; }
-    const val = parseInt(selected.value);
-    q.options.forEach((_, j) => {
-      const lbl = document.getElementById(`lbl-${i}-${j}`);
-      lbl.style.pointerEvents = "none";
-      if (j === q.answer) lbl.classList.add("correct");
-      else if (j === val && val !== q.answer) lbl.classList.add("wrong");
-    });
-    const info = document.getElementById(`info-${i}`);
-    if (val === q.answer) {
+function validate(){
+  let score=0;
+  let allAnswered=true;
+  questions.forEach((q,i)=>{
+    const radios=document.querySelectorAll(`input[name="q${i}"]`);
+    let chosen=null;
+    radios.forEach(r=>{if(r.checked)chosen=parseInt(r.value);});
+    if(chosen===null){allAnswered=false;return;}
+    const opts=document.querySelectorAll(`[id^="opt-${i}-"]`);
+    opts.forEach(o=>o.style.pointerEvents="none");
+    if(chosen===q.correct){
       score++;
-      info.textContent = "✅ Bonne réponse !";
+      document.getElementById(`opt-${i}-${chosen}`).classList.add("correct");
     } else {
-      info.textContent = `❌ Mauvaise réponse. La bonne réponse était : « ${q.options[q.answer]} »`;
+      document.getElementById(`opt-${i}-${chosen}`).classList.add("wrong");
+      document.getElementById(`opt-${i}-${q.correct}`).classList.add("correct");
+      const note=document.createElement("div");
+      note.className="answer-note";
+      note.innerHTML=`✅ Bonne réponse : <strong>${q.options[q.correct]}</strong>`;
+      document.querySelector(`[data-index="${i}"]`).appendChild(note);
     }
-    info.style.display = "block";
   });
-  if (!allAnswered) { alert("Veuillez répondre à toutes les questions."); return; }
-  scoreBox.innerHTML = `🎯 Votre score : <strong>${score} / ${questions.length}</strong>${score===questions.length?" — Parfait ! 🏆":score>=4?" — Très bien ! 👍":" — Continuez à réviser ! 💪"}`;
-  scoreBox.style.display = "block";
-  btnValidate.style.display = "none";
-  btnReset.style.display = "block";
+  if(!allAnswered){alert("Veuillez répondre à toutes les questions avant de valider.");return;}
+  const pct=Math.round(score/questions.length*100);
+  let msg=pct===100?"🏆 Parfait !":pct>=66?"👍 Bon travail !":"💪 Continuez à pratiquer !";
+  scoreBox.innerHTML=`Score : <span style="color:${pct>=66?'#27ae60':'#e74c3c'}">${score}/${questions.length}</span> — ${msg}`;
+  scoreBox.style.display="block";
+  btnValidate.style.display="none";
+  btnRestart.style.display="block";
   scoreBox.scrollIntoView({behavior:"smooth"});
-});
+}
 
-btnReset.addEventListener("click", render);
+function restart(){
+  scoreBox.style.display="none";
+  btnValidate.style.display="block";
+  btnRestart.style.display="none";
+  render();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 
+btnValidate.addEventListener("click",validate);
+btnRestart.addEventListener("click",restart);
 render();
 </script>
 </body>
