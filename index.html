@@ -6,105 +6,161 @@
 <title>Quiz Business English du jour</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
-h1{text-align:center;color:#1a3c5e;font-size:1.4rem;margin-bottom:6px}
-.subtitle{text-align:center;color:#555;font-size:.9rem;margin-bottom:20px}
-.question{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
-.q-label{font-weight:bold;margin-bottom:10px;font-size:.95rem}
-.option{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:6px;margin-bottom:6px;cursor:pointer;border:2px solid #dde3ea;transition:border-color .2s}
-.option:hover{border-color:#4a90d9}
-.option input{cursor:pointer}
-.option label{cursor:pointer;font-size:.9rem}
-.correct{background:#e6f9ee;border-color:#27ae60!important}
-.wrong{background:#fdecea;border-color:#e74c3c!important}
-.answer-note{font-size:.82rem;margin-top:6px;color:#444}
-.btn{display:block;width:100%;max-width:320px;margin:10px auto;padding:12px;border:none;border-radius:8px;font-size:1rem;cursor:pointer;font-weight:bold}
-#btn-validate{background:#1a3c5e;color:#fff}
-#btn-validate:hover{background:#254f7a}
-#btn-restart{background:#27ae60;color:#fff;display:none}
-#btn-restart:hover{background:#1e8449}
-#score-box{text-align:center;font-size:1.2rem;font-weight:bold;padding:14px;background:#fff;border-radius:10px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.08);display:none}
+body{font-family:system-ui,sans-serif;background:#f0f4f8;color:#1a202c;padding:16px}
+h1{text-align:center;font-size:1.4rem;color:#2b6cb0;margin-bottom:4px}
+.subtitle{text-align:center;color:#718096;font-size:.9rem;margin-bottom:20px}
+.card{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.q-num{font-size:.75rem;font-weight:700;color:#718096;text-transform:uppercase;margin-bottom:6px}
+.q-text{font-size:.95rem;font-weight:600;margin-bottom:10px;line-height:1.4}
+.options label{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;margin-bottom:6px;border-radius:7px;border:1.5px solid #e2e8f0;cursor:pointer;font-size:.9rem;transition:border-color .2s}
+.options label:hover{border-color:#90cdf4}
+.options input{margin-top:2px;flex-shrink:0}
+.correct{border-color:#48bb78!important;background:#f0fff4}
+.wrong{border-color:#fc8181!important;background:#fff5f5}
+.feedback{font-size:.82rem;margin-top:6px;padding:6px 10px;border-radius:6px}
+.feedback.ok{background:#f0fff4;color:#276749}
+.feedback.ko{background:#fff5f5;color:#9b2c2c}
+#score-box{display:none;background:#2b6cb0;color:#fff;border-radius:10px;padding:16px;text-align:center;margin-bottom:16px}
+#score-box h2{font-size:1.5rem}
+#score-box p{font-size:.9rem;margin-top:4px;opacity:.9}
+.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:10px}
+#btn-validate{background:#2b6cb0;color:#fff}
+#btn-validate:hover{background:#2c5282}
+#btn-reset{background:#e2e8f0;color:#2d3748;display:none}
+#btn-reset:hover{background:#cbd5e0}
+em{font-style:italic;color:#2c5282}
 </style>
 </head>
 <body>
-<h1>🎓 Quiz Business English du jour</h1>
-<p class="subtitle">Priorités, charge de travail &amp; productivité — 6 questions</p>
-<div id="score-box"></div>
+<h1>🎯 Quiz Business English du jour</h1>
+<p class="subtitle">Workload, performance & getting things done</p>
+<div id="score-box"><h2 id="score-txt"></h2><p id="score-msg"></p></div>
 <div id="quiz"></div>
 <button class="btn" id="btn-validate">Valider mes réponses</button>
-<button class="btn" id="btn-restart">Recommencer</button>
+<button class="btn" id="btn-reset">Recommencer</button>
+
 <script>
 const questions=[
-{type:"mc",q:'Que signifie <em>"in the pipeline"</em> ?',options:["Un projet annulé","Un projet en cours de préparation","Un projet terminé","Un projet suspendu"],correct:1},
-{type:"mc",q:'Quelle expression décrit une tâche mise de côté temporairement ?',options:["On the front burner","Quick win","Rush job","On the back burner"],correct:3},
-{type:"mc",q:'Complétez : <em>"The launch is two weeks early — we\'re actually _____ _____ !"</em>',options:["behind schedule","in the pipeline","ahead of schedule","on the front burner"],correct:2},
-{type:"mc",q:'Que signifie <em>"rush job"</em> ?',options:["Un travail effectué en avance","Un travail délégué à une autre équipe","Un travail fait dans l\'urgence","Un travail annulé en dernière minute"],correct:2},
-{type:"mc",q:'Comment dit-on "accélérer le processus" pour gagner du temps sur un projet ?',options:["To back-burner","To fast-track","To deep dive","To quick win"],correct:1},
-{type:"mc",q:'Révision — Que signifie <em>"blue-sky thinking"</em> ?',options:["Une réflexion stratégique très encadrée","Une réunion de bilan de projet","Une réflexion créative libre, sans contraintes","Une analyse des risques"],correct:2}
+  {
+    type:"mcq",
+    text:'Que signifie <em>"bandwidth"</em> dans un contexte professionnel ?',
+    options:["La vitesse de connexion internet du bureau","La capacité ou disponibilité d\'une personne à prendre de nouvelles tâches","Le budget alloué à un projet","Le nombre d\'employés dans une équipe"],
+    answer:1
+  },
+  {
+    type:"mcq",
+    text:'Quelle expression signifie <strong>"avoir plusieurs casquettes"</strong> ?',
+    options:["To delegate","To do the heavy lifting","To wear many hats","To be slammed"],
+    answer:2
+  },
+  {
+    type:"mcq",
+    text:'Complète la phrase : <em>"Before the board presentation, let\'s make sure we\'ve got all our ___ in a row — no surprises."</em>',
+    options:["ideas","ducks","tasks","hats"],
+    answer:1
+  },
+  {
+    type:"mcq",
+    text:'Que signifie <em>"all systems go"</em> ?',
+    options:["Il y a plusieurs problèmes à résoudre","Le projet est annulé","Tout est en attente de validation","Tout est prêt, on peut démarrer"],
+    answer:3
+  },
+  {
+    type:"mcq",
+    text:'Comment exprimes-tu le fait d\'être complètement débordé de travail ?',
+    options:["I\'m ahead of schedule","I have full ownership","I\'m swamped","I\'m delegating everything"],
+    answer:2
+  },
+  {
+    type:"mcq",
+    text:'Quelle expression signifie <strong>"commencer par les tâches les plus simples"</strong> ?',
+    options:["To get your ducks in a row","To pick the low-hanging fruit","To do the heavy lifting","To keep your eye on the ball"],
+    answer:1
+  },
+  {
+    type:"mcq",
+    text:'Que signifie <em>"ownership"</em> en contexte professionnel ?',
+    options:["La propriété des locaux","Le budget approuvé pour un projet","La prise en charge pleine et entière d\'un sujet ou d\'un résultat","La délégation d\'une tâche à un collègue"],
+    answer:2
+  },
+  {
+    type:"mcq",
+    text:'<strong>Révision —</strong> Que signifie <em>"to spitball"</em> ?',
+    options:["Rejeter une idée formellement","Lancer des idées spontanément et sans filtre","Finaliser un document de stratégie","Présenter un rapport au client"],
+    answer:1
+  },
+  {
+    type:"mcq",
+    text:'<strong>Révision —</strong> Quelle expression signifie <strong>"donner du corps à une idée"</strong> ?',
+    options:["To bounce ideas off someone","To pick the low-hanging fruit","To flesh something out","To be in the works"],
+    answer:2
+  },
+  {
+    type:"mcq",
+    text:'Complète la phrase : <em>"There\'s a lot going on, but let\'s keep our eye on the ___ — the client deliverable is what matters most."</em>',
+    options:["clock","screen","ball","target"],
+    answer:2
+  }
 ];
 
-const quiz=document.getElementById("quiz");
-const btnValidate=document.getElementById("btn-validate");
-const btnRestart=document.getElementById("btn-restart");
-const scoreBox=document.getElementById("score-box");
-
 function render(){
+  const quiz=document.getElementById("quiz");
   quiz.innerHTML="";
   questions.forEach((q,i)=>{
-    const div=document.createElement("div");
-    div.className="question";
-    div.dataset.index=i;
-    let html=`<div class="q-label">Q${i+1}. ${q.q}</div>`;
-    q.options.forEach((opt,j)=>{
-      html+=`<div class="option" id="opt-${i}-${j}"><input type="radio" name="q${i}" id="r${i}-${j}" value="${j}"><label for="r${i}-${j}">${opt}</label></div>`;
-    });
-    div.innerHTML=html;
-    quiz.appendChild(div);
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`<div class="q-num">Question ${i+1} / ${questions.length}</div><div class="q-text">${q.text}</div><div class="options" id="opts-${i}">`+
+      q.options.map((o,j)=>`<label id="lbl-${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join("")+
+    `</div><div class="feedback" id="fb-${i}" style="display:none"></div>`;
+    quiz.appendChild(card);
   });
 }
 
-function validate(){
+document.getElementById("btn-validate").addEventListener("click",()=>{
   let score=0;
   let allAnswered=true;
   questions.forEach((q,i)=>{
-    const radios=document.querySelectorAll(`input[name="q${i}"]`);
-    let chosen=null;
-    radios.forEach(r=>{if(r.checked)chosen=parseInt(r.value);});
-    if(chosen===null){allAnswered=false;return;}
-    const opts=document.querySelectorAll(`[id^="opt-${i}-"]`);
-    opts.forEach(o=>o.style.pointerEvents="none");
-    if(chosen===q.correct){
+    const sel=document.querySelector(`input[name="q${i}"]:checked`);
+    if(!sel){allAnswered=false;return;}
+    const chosen=parseInt(sel.value);
+    const fb=document.getElementById(`fb-${i}`);
+    q.options.forEach((_,j)=>{
+      const lbl=document.getElementById(`lbl-${i}-${j}`);
+      lbl.classList.remove("correct","wrong");
+      if(j===q.answer)lbl.classList.add("correct");
+      else if(j===chosen&&chosen!==q.answer)lbl.classList.add("wrong");
+    });
+    fb.style.display="block";
+    if(chosen===q.answer){
       score++;
-      document.getElementById(`opt-${i}-${chosen}`).classList.add("correct");
+      fb.className="feedback ok";
+      fb.textContent="✅ Bonne réponse !";
     } else {
-      document.getElementById(`opt-${i}-${chosen}`).classList.add("wrong");
-      document.getElementById(`opt-${i}-${q.correct}`).classList.add("correct");
-      const note=document.createElement("div");
-      note.className="answer-note";
-      note.innerHTML=`✅ Bonne réponse : <strong>${q.options[q.correct]}</strong>`;
-      document.querySelector(`[data-index="${i}"]`).appendChild(note);
+      fb.className="feedback ko";
+      fb.textContent=`❌ Mauvaise réponse. La bonne réponse était : « ${q.options[q.answer]} »`;
     }
+    document.querySelectorAll(`input[name="q${i}"]`).forEach(r=>r.disabled=true);
   });
-  if(!allAnswered){alert("Veuillez répondre à toutes les questions avant de valider.");return;}
-  const pct=Math.round(score/questions.length*100);
-  let msg=pct===100?"🏆 Parfait !":pct>=66?"👍 Bon travail !":"💪 Continuez à pratiquer !";
-  scoreBox.innerHTML=`Score : <span style="color:${pct>=66?'#27ae60':'#e74c3c'}">${score}/${questions.length}</span> — ${msg}`;
-  scoreBox.style.display="block";
-  btnValidate.style.display="none";
-  btnRestart.style.display="block";
-  scoreBox.scrollIntoView({behavior:"smooth"});
-}
+  if(!allAnswered){alert("Merci de répondre à toutes les questions avant de valider.");return;}
+  const box=document.getElementById("score-box");
+  document.getElementById("score-txt").textContent=`${score} / ${questions.length}`;
+  const msgs=["Courage, on continue ! 💪","Pas mal, continue comme ça ! 👍","Très bien ! 🎉","Excellent ! Parfait ! 🏆"];
+  const idx=score<=3?0:score<=5?1:score<=8?2:3;
+  document.getElementById("score-msg").textContent=msgs[idx];
+  box.style.display="block";
+  box.scrollIntoView({behavior:"smooth"});
+  document.getElementById("btn-validate").style.display="none";
+  document.getElementById("btn-reset").style.display="block";
+});
 
-function restart(){
-  scoreBox.style.display="none";
-  btnValidate.style.display="block";
-  btnRestart.style.display="none";
+document.getElementById("btn-reset").addEventListener("click",()=>{
+  document.getElementById("score-box").style.display="none";
+  document.getElementById("btn-validate").style.display="block";
+  document.getElementById("btn-reset").style.display="none";
   render();
   window.scrollTo({top:0,behavior:"smooth"});
-}
+});
 
-btnValidate.addEventListener("click",validate);
-btnRestart.addEventListener("click",restart);
 render();
 </script>
 </body>
