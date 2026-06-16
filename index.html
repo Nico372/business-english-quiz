@@ -7,63 +7,64 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
-h1{color:#2c5f8a;text-align:center;margin-bottom:8px;font-size:1.4em}
-.subtitle{text-align:center;color:#555;margin-bottom:20px;font-size:.95em}
-.question{background:#fff;border-radius:8px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
-.question p{font-weight:bold;margin-bottom:10px;line-height:1.4}
-.option{display:block;padding:8px 12px;margin:5px 0;border-radius:6px;cursor:pointer;border:2px solid #ddd;background:#fafafa;transition:border-color .2s}
-.option:hover{border-color:#2c5f8a}
-.option input{margin-right:8px}
-.correct{border-color:#27ae60!important;background:#eafaf1!important}
-.wrong{border-color:#e74c3c!important;background:#fdf0ef!important}
-.answer-label{font-size:.85em;margin-top:6px;color:#27ae60;font-weight:bold}
-.wrong-answer-label{color:#e74c3c}
-#score-box{background:#2c5f8a;color:#fff;border-radius:8px;padding:16px;text-align:center;margin-bottom:16px;font-size:1.2em;font-weight:bold}
-.btn{display:block;width:100%;max-width:320px;margin:10px auto;padding:12px;border:none;border-radius:8px;font-size:1em;cursor:pointer;font-weight:bold}
+h1{color:#2c5f8a;font-size:1.4em;text-align:center;margin-bottom:6px}
+p.subtitle{text-align:center;color:#555;font-size:.9em;margin-bottom:20px}
+.card{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.card h3{font-size:1em;margin-bottom:10px;color:#2c5f8a}
+label{display:block;padding:7px 10px;border-radius:6px;cursor:pointer;margin-bottom:5px;border:1px solid #ddd;font-size:.93em;transition:background .15s}
+label:hover{background:#e8f0fb}
+input[type=radio]{margin-right:8px}
+.correct{background:#d4edda!important;border-color:#28a745!important;color:#155724}
+.wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24}
+.answer-info{margin-top:8px;font-size:.85em;color:#333;font-style:italic}
+#score-box{display:none;background:#2c5f8a;color:#fff;border-radius:10px;padding:16px;text-align:center;margin-bottom:16px}
+#score-box h2{font-size:1.5em;margin-bottom:6px}
+.btn{display:block;width:100%;padding:13px;border:none;border-radius:8px;font-size:1em;cursor:pointer;margin-top:6px}
 #btn-validate{background:#2c5f8a;color:#fff}
 #btn-validate:hover{background:#1e4570}
-#btn-restart{background:#e07b00;color:#fff;display:none}
-#btn-restart:hover{background:#b86000}
+#btn-reset{background:#e07b00;color:#fff;display:none}
+#btn-reset:hover{background:#b85e00}
 </style>
 </head>
 <body>
 <h1>🧠 Quiz Business English du jour</h1>
-<p class="subtitle">Prioritisation &amp; Workload — 6 questions sur les 10 expressions du jour</p>
-<div id="score-box" style="display:none"></div>
+<p class="subtitle">Meetings &amp; Conversations — 6 questions sur les expressions du jour</p>
+<div id="score-box"><h2 id="score-text"></h2><p id="score-msg"></p></div>
 <div id="quiz"></div>
-<button class="btn" id="btn-validate">Valider mes réponses</button>
-<button class="btn" id="btn-restart">Recommencer</button>
+<button class="btn" id="btn-validate" onclick="validate()">✅ Valider mes réponses</button>
+<button class="btn" id="btn-reset" onclick="reset()">🔄 Recommencer</button>
+
 <script>
 const questions=[
   {
-    q:'Que signifie <em>"bandwidth"</em> dans un contexte professionnel ?',
-    options:["La vitesse de connexion Internet","La capacité ou disponibilité d'une personne ou équipe","La taille d'un achat média","Un type de réunion d'équipe"],
-    correct:1
+    q:'Que signifie <strong>"in a nutshell"</strong> ?',
+    opts:["En grand détail","En résumé, de façon concise","Hors du sujet","En priorité"],
+    ans:1
   },
   {
-    q:'Quelle expression signifie <em>prioritaire</em>, ce qui est traité en premier ?',
-    options:["On the back burner","Quick win","On the front burner","Food for thought"],
-    correct:2
+    q:'Quelle expression signifie <em>passer la parole à quelqu\'un</em> ?',
+    opts:["Wrap-up","Let\'s crack on","To kick off","Over to you"],
+    ans:3
   },
   {
-    q:'Complétez la phrase : <em>"Before we kick off the project, let\'s get our ________ in a row."</em>',
-    options:["plates","wins","ducks","ideas"],
-    correct:2
+    q:'Complétez : <em>"We\'ve got a lot to cover, so let\'s ________ — I\'ll start with the results."</em>',
+    opts:["wrap up","talk through","crack on","keep it high-level"],
+    ans:2
   },
   {
-    q:'Quelle expression de révision signifie <em>changer de stratégie</em> ?',
-    options:["Consider it done","Food for thought","To pivot","To be swamped"],
-    correct:2
+    q:'Que signifie <strong>"the bottom line"</strong> dans un contexte professionnel ?',
+    opts:["La dernière diapositive","Le prix le plus bas proposé","Le point le plus important / la conclusion","Un résumé écrit"],
+    ans:2
   },
   {
-    q:'Que veut dire <em>"to pick the low-hanging fruit"</em> ?',
-    options:["S'attaquer aux tâches les plus complexes en premier","Éviter de travailler","S'occuper d'abord des tâches les plus simples et accessibles","Annuler des tâches secondaires"],
-    correct:2
+    q:'Quelle expression de révision décrit la <em>capacité de travail disponible</em> d\'une équipe ?',
+    opts:["On the front burner","On the back burner","Bandwidth","Wrap-up"],
+    ans:2
   },
   {
-    q:'Quelle expression signifie <em>être débordé, submergé de travail</em> ?',
-    options:["To have a lot on your plate","To be swamped","On the back burner","Quick win"],
-    correct:1
+    q:'Complétez : <em>"We\'re ready — let\'s ________ the campaign planning session!"</em>',
+    opts:["bottom line","keep it high-level","talk through","kick off"],
+    ans:3
   }
 ];
 
@@ -71,61 +72,52 @@ function render(){
   const quiz=document.getElementById('quiz');
   quiz.innerHTML='';
   questions.forEach((q,i)=>{
-    const div=document.createElement('div');
-    div.className='question';
-    div.innerHTML=`<p>Question ${i+1}. ${q.q}</p>`;
-    q.options.forEach((opt,j)=>{
-      const label=document.createElement('label');
-      label.className='option';
-      label.innerHTML=`<input type="radio" name="q${i}" value="${j}"> ${opt}`;
-      div.appendChild(label);
-    });
-    quiz.appendChild(div);
+    let opts=q.opts.map((o,j)=>`<label id="lbl_${i}_${j}"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join('');
+    quiz.innerHTML+=`<div class="card" id="card_${i}"><h3>Question ${i+1} — ${q.q}</h3>${opts}<div class="answer-info" id="info_${i}" style="display:none"></div></div>`;
   });
 }
 
-document.getElementById('btn-validate').addEventListener('click',()=>{
+function validate(){
   let score=0;
-  const qDivs=document.querySelectorAll('.question');
+  let allAnswered=true;
   questions.forEach((q,i)=>{
-    const selected=document.querySelector(`input[name="q${i}"]:checked`);
-    const labels=qDivs[i].querySelectorAll('.option');
-    labels.forEach(l=>l.style.pointerEvents='none');
-    const correctLabel=labels[q.correct];
-    correctLabel.classList.add('correct');
-    if(selected){
-      const val=parseInt(selected.value);
-      if(val===q.correct){
-        score++;
-      } else {
-        labels[val].classList.add('wrong');
-        const info=document.createElement('div');
-        info.className='answer-label wrong-answer-label';
-        info.textContent='✗ Bonne réponse : '+q.options[q.correct];
-        qDivs[i].appendChild(info);
-      }
-    } else {
-      const info=document.createElement('div');
-      info.className='answer-label wrong-answer-label';
-      info.textContent='Sans réponse — Bonne réponse : '+q.options[q.correct];
-      qDivs[i].appendChild(info);
+    const sel=document.querySelector(`input[name="q${i}"]:checked`);
+    if(!sel){allAnswered=false;return;}
+    const chosen=parseInt(sel.value);
+    for(let j=0;j<q.opts.length;j++){
+      const lbl=document.getElementById(`lbl_${i}_${j}`);
+      lbl.style.pointerEvents='none';
+      if(j===q.ans){lbl.classList.add('correct');}
+      else if(j===chosen&&chosen!==q.ans){lbl.classList.add('wrong');}
     }
+    const info=document.getElementById(`info_${i}`);
+    if(chosen===q.ans){
+      score++;
+      info.innerHTML='✅ Bonne réponse !';
+    } else {
+      info.innerHTML=`❌ Mauvaise réponse. La bonne réponse était : <strong>${q.opts[q.ans]}</strong>`;
+    }
+    info.style.display='block';
   });
+  if(!allAnswered){alert('Veuillez répondre à toutes les questions avant de valider.');return;}
   const box=document.getElementById('score-box');
+  document.getElementById('score-text').textContent=`Score : ${score} / ${questions.length}`;
+  const msgs=['Courage, relisez les expressions !','Pas mal, continuez !','Bien joué !','Excellent travail ! 🎯'];
+  const idx=score<=1?0:score<=3?1:score<=5?2:3;
+  document.getElementById('score-msg').textContent=msgs[idx];
   box.style.display='block';
-  const emoji=score===6?'🏆':score>=4?'👍':score>=2?'💪':'📖';
-  box.textContent=`${emoji} Votre score : ${score} / 6`;
   document.getElementById('btn-validate').style.display='none';
-  document.getElementById('btn-restart').style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
-});
+  document.getElementById('btn-reset').style.display='block';
+  box.scrollIntoView({behavior:'smooth'});
+}
 
-document.getElementById('btn-restart').addEventListener('click',()=>{
+function reset(){
   document.getElementById('score-box').style.display='none';
   document.getElementById('btn-validate').style.display='block';
-  document.getElementById('btn-restart').style.display='none';
+  document.getElementById('btn-reset').style.display='none';
   render();
-});
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
 render();
 </script>
