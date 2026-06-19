@@ -8,90 +8,71 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
 h1{color:#2c5f8a;text-align:center;margin-bottom:6px;font-size:1.4em}
-.subtitle{text-align:center;color:#555;margin-bottom:20px;font-size:.95em}
-.question{background:#fff;border-radius:8px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
-.question p{font-weight:bold;margin-bottom:10px;line-height:1.4}
+p.subtitle{text-align:center;color:#555;margin-bottom:20px;font-size:.95em}
+.card{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.card p{font-weight:600;margin-bottom:10px;line-height:1.4}
 label{display:block;padding:8px 10px;margin:4px 0;border-radius:6px;cursor:pointer;border:1px solid #ddd;transition:background .2s}
-label:hover{background:#e8f0fe}
+label:hover{background:#eef3f9}
 input[type=radio]{margin-right:8px}
-.correct{background:#d4edda!important;border-color:#28a745!important;color:#155724}
-.wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24}
-.answer-info{margin-top:8px;font-size:.88em;color:#2c5f8a;font-weight:bold}
-#score-box{background:#2c5f8a;color:#fff;text-align:center;padding:16px;border-radius:8px;margin-bottom:16px;font-size:1.2em;display:none}
-.btn{display:block;width:100%;max-width:320px;margin:10px auto;padding:12px;border:none;border-radius:8px;font-size:1em;cursor:pointer;font-weight:bold}
+.correct{background:#d4edda;border-color:#28a745;color:#155724}
+.wrong{background:#f8d7da;border-color:#dc3545;color:#721c24}
+.answer-note{margin-top:8px;font-size:.88em;color:#444;font-style:italic}
+#score-box{text-align:center;background:#2c5f8a;color:#fff;border-radius:10px;padding:16px;margin-bottom:16px;font-size:1.2em;font-weight:700}
+button{display:block;width:100%;max-width:340px;margin:10px auto;padding:12px;border:none;border-radius:8px;font-size:1em;cursor:pointer;font-weight:700}
 #btn-validate{background:#2c5f8a;color:#fff}
 #btn-validate:hover{background:#1e4570}
 #btn-reset{background:#e07b00;color:#fff;display:none}
-#btn-reset:hover{background:#b86200}
+#btn-reset:hover{background:#b85f00}
+#score-box{display:none}
 </style>
 </head>
 <body>
-<h1>📝 Quiz Business English du jour</h1>
-<p class="subtitle">Idioms &amp; Everyday Sayings — Testez vos connaissances !</p>
+<h1>🧠 Quiz Business English du jour</h1>
+<p class="subtitle">Idioms &amp; Colourful Sayings — 6 questions, bonne chance !</p>
 <div id="score-box"></div>
 <div id="quiz"></div>
-<button class="btn" id="btn-validate" onclick="validate()">✅ Valider mes réponses</button>
-<button class="btn" id="btn-reset" onclick="reset()">🔄 Recommencer</button>
+<button id="btn-validate" onclick="validate()">✅ Valider mes réponses</button>
+<button id="btn-reset" onclick="reset()">🔄 Recommencer</button>
 <script>
 const questions=[
   {
-    q:'Que signifie l\'expression <em>"out of the blue"</em> ?',
-    opts:["Quelque chose de planifié longtemps à l'avance","Quelque chose d'inattendu, sans avertissement","Quelque chose qui arrive très rarement","Quelque chose de décevant"],
+    q:'Que signifie <em>"go down in flames"</em> ?',
+    opts:["Réussir au-delà des attentes","Échouer de façon spectaculaire","Brûler lentement","Rebondir après un échec"],
     ans:1
   },
   {
-    q:'Quelle expression signifie <em>« la nuit porte conseil »</em> ?',
-    opts:["Take it easy","Once in a blue moon","Let's call it a day","Sleep on it"],
+    q:'Quelle expression signifie <strong>ignorer volontairement</strong> ?',
+    opts:["To talk shop","To get cold feet","To turn a blind eye","To seize the day"],
+    ans:2
+  },
+  {
+    q:'Complétez : "The team is completely ________ — three deadlines this week alone."',
+    opts:["in deep water","seizing the day","drinking from a firehose","slammed"],
     ans:3
   },
   {
-    q:'Complétez : <em>"The client\'s name ________ — I think we pitched to them last year."</em>',
-    opts:["wraps my head","hits the mark","rings a bell","calls it a day"],
-    ans:2
-  },
-  {
-    q:'Que signifie <em>"the best of both worlds"</em> ?',
-    opts:["Choisir l'option la plus sûre","Trouver un compromis où chacun perd quelque chose","Profiter des avantages de deux options à la fois","Avoir trop de choix"],
-    ans:2
-  },
-  {
-    q:'Quelle expression utilise-t-on quand quelqu\'un apparaît <em>juste au moment où on parlait de lui</em> ?',
-    opts:["Out of the blue","Once in a blue moon","Speak of the devil","That rings a bell"],
-    ans:2
-  },
-  {
-    q:'Complétez : <em>"It took the whole team a week to ________ the new attribution model."</em>',
-    opts:["sleep on","call it a day on","have a good one with","wrap their heads around"],
-    ans:3
-  },
-  {
-    q:'Que signifie <em>"once in a blue moon"</em> ?',
-    opts:["Chaque mois","À un moment inattendu","Très rarement","Une seule fois dans sa vie"],
-    ans:2
-  },
-  {
-    q:'<em>"Gotta bounce"</em> est-elle appropriée dans une proposition écrite formelle à un nouveau client ?',
-    opts:["Oui, c'est une expression professionnelle courante","Non, c'est beaucoup trop informel pour un écrit formel","Oui, mais seulement en fin de document","Non, mais on peut l'utiliser à l'oral en réunion formelle"],
+    q:'Que signifie <em>"It\'s not my cup of tea"</em> ?',
+    opts:["C'est trop cher pour moi","Ce n'est pas ma tasse de thé / ce n'est pas mon truc","C'est parfait pour moi","Je suis débordé"],
     ans:1
   },
   {
-    q:'<em>"Let\'s call it a day"</em> peut-elle s\'utiliser pour clore une réunion ET une journée de travail ?',
-    opts:["Non, uniquement pour clore une réunion","Non, uniquement pour finir la journée","Oui, les deux contextes sont corrects","Seulement en anglais américain"],
+    q:'Que signifie <em>"to be drinking from a firehose"</em> ?',
+    opts:["Éteindre une crise rapidement","Avoir très soif","Être submergé d'informations","Être épuisé physiquement"],
     ans:2
   },
   {
-    q:'Complétez : <em>"You\'ve been working flat out all week — ________ this weekend and recharge!"</em>',
-    opts:["have a good one","sleep on it","take it easy","wrap your head around it"],
+    q:'Quelle expression correspond à <strong>ne pas se fier aux apparences</strong> ?',
+    opts:["Go down in flames","We are in deep water","Don\'t judge a book by its cover","Seize the day"],
     ans:2
   }
 ];
 
 function render(){
-  const quiz=document.getElementById('quiz');
-  quiz.innerHTML='';
+  const div=document.getElementById('quiz');
+  div.innerHTML='';
   questions.forEach((q,i)=>{
-    let opts=q.opts.map((o,j)=>`<label id="lbl-${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join('');
-    quiz.innerHTML+=`<div class="question" id="qblock-${i}"><p>Q${i+1}. ${q.q}</p>${opts}<div class="answer-info" id="info-${i}" style="display:none"></div></div>`;
+    let opts=q.opts.map((o,j)=>`<label id="lbl_${i}_${j}"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join('');
+    div.innerHTML+=`<div class="card" id="card_${i}"><p>Q${i+1}. ${q.q}</p>${opts}<div class="answer-note" id="note_${i}" style="display:none"></div></div>`;
   });
 }
 
@@ -100,27 +81,30 @@ function validate(){
   let allAnswered=true;
   questions.forEach((q,i)=>{
     const sel=document.querySelector(`input[name="q${i}"]:checked`);
-    if(!sel){allAnswered=false;}
-  });
-  if(!allAnswered){alert("Veuillez répondre à toutes les questions avant de valider.");return;}
-  questions.forEach((q,i)=>{
-    const sel=document.querySelector(`input[name="q${i}"]:checked`);
-    const chosen=parseInt(sel.value);
-    const correct=q.ans;
-    const info=document.getElementById(`info-${i}`);
+    if(!sel){allAnswered=false;return;}
+    const val=parseInt(sel.value);
     for(let j=0;j<q.opts.length;j++){
-      const lbl=document.getElementById(`lbl-${i}-${j}`);
-      lbl.querySelector('input').disabled=true;
-      if(j===correct){lbl.classList.add('correct');}
-      else if(j===chosen&&chosen!==correct){lbl.classList.add('wrong');}
+      const lbl=document.getElementById(`lbl_${i}_${j}`);
+      lbl.style.pointerEvents='none';
+      if(j===q.ans){lbl.className='correct';}
+      else if(j===val&&val!==q.ans){lbl.className='wrong';}
     }
-    info.style.display='block';
-    if(chosen===correct){score++;info.textContent='✅ Bonne réponse !';}
-    else{info.textContent=`❌ Mauvaise réponse. La bonne réponse était : "${q.opts[correct]}"`;info.style.color='#dc3545';}
+    const note=document.getElementById(`note_${i}`);
+    if(val===q.ans){
+      score++;
+      note.innerHTML='✅ Bonne réponse !';
+      note.style.color='#155724';
+    } else {
+      note.innerHTML=`❌ Mauvaise réponse. La bonne réponse est : <strong>${q.opts[q.ans]}</strong>`;
+      note.style.color='#721c24';
+    }
+    note.style.display='block';
   });
+  if(!allAnswered){alert('Veuillez répondre à toutes les questions avant de valider.');return;}
   const box=document.getElementById('score-box');
   box.style.display='block';
-  box.textContent=`🎯 Votre score : ${score} / ${questions.length}`;
+  const emoji=score===6?'🏆':score>=4?'👍':'💪';
+  box.innerHTML=`${emoji} Votre score : ${score} / ${questions.length}`;
   document.getElementById('btn-validate').style.display='none';
   document.getElementById('btn-reset').style.display='block';
   box.scrollIntoView({behavior:'smooth'});
