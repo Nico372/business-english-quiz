@@ -7,72 +7,75 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
-h1{color:#2c5f8a;text-align:center;margin-bottom:6px;font-size:1.4em}
-p.subtitle{text-align:center;color:#555;margin-bottom:20px;font-size:.95em}
+h1{color:#2c5f8a;text-align:center;font-size:1.4em;margin-bottom:6px}
+p.subtitle{text-align:center;color:#555;font-size:.9em;margin-bottom:20px}
 .card{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
-.card p{font-weight:600;margin-bottom:10px;line-height:1.4}
-label{display:block;padding:8px 10px;margin:4px 0;border-radius:6px;cursor:pointer;border:1px solid #ddd;transition:background .2s}
-label:hover{background:#eef3f9}
+.q-num{font-weight:bold;color:#2c5f8a;margin-bottom:8px;font-size:.95em}
+.q-text{margin-bottom:10px;font-size:.95em;line-height:1.4}
+label{display:block;padding:8px 10px;border-radius:6px;cursor:pointer;margin-bottom:6px;border:1px solid #ddd;font-size:.9em;transition:background .2s}
+label:hover{background:#e8f0fe}
 input[type=radio]{margin-right:8px}
-.correct{background:#d4edda;border-color:#28a745;color:#155724}
-.wrong{background:#f8d7da;border-color:#dc3545;color:#721c24}
-.answer-note{margin-top:8px;font-size:.88em;color:#444;font-style:italic}
-#score-box{text-align:center;background:#2c5f8a;color:#fff;border-radius:10px;padding:16px;margin-bottom:16px;font-size:1.2em;font-weight:700}
-button{display:block;width:100%;max-width:340px;margin:10px auto;padding:12px;border:none;border-radius:8px;font-size:1em;cursor:pointer;font-weight:700}
+.correct{background:#d4edda!important;border-color:#28a745!important;color:#155724}
+.wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24}
+.answer-note{font-size:.85em;margin-top:6px;color:#2c5f8a;font-style:italic}
+#score-box{background:#2c5f8a;color:#fff;border-radius:10px;padding:16px;text-align:center;font-size:1.2em;font-weight:bold;margin-bottom:16px;display:none}
+.btn{display:block;width:100%;padding:13px;border:none;border-radius:8px;font-size:1em;font-weight:bold;cursor:pointer;margin-bottom:10px}
 #btn-validate{background:#2c5f8a;color:#fff}
 #btn-validate:hover{background:#1e4570}
 #btn-reset{background:#e07b00;color:#fff;display:none}
 #btn-reset:hover{background:#b85f00}
-#score-box{display:none}
 </style>
 </head>
 <body>
 <h1>🧠 Quiz Business English du jour</h1>
-<p class="subtitle">Idioms &amp; Colourful Sayings — 6 questions, bonne chance !</p>
+<p class="subtitle">Idioms &amp; Proverbs — 6 questions sur les expressions du jour</p>
 <div id="score-box"></div>
 <div id="quiz"></div>
-<button id="btn-validate" onclick="validate()">✅ Valider mes réponses</button>
-<button id="btn-reset" onclick="reset()">🔄 Recommencer</button>
+<button class="btn" id="btn-validate">✅ Valider mes réponses</button>
+<button class="btn" id="btn-reset">🔄 Recommencer</button>
 <script>
 const questions=[
   {
-    q:'Que signifie <em>"go down in flames"</em> ?',
-    opts:["Réussir au-delà des attentes","Échouer de façon spectaculaire","Brûler lentement","Rebondir après un échec"],
-    ans:1
+    q:'Que signifie <strong>"to go round in circles"</strong> ?',
+    options:['Progresser régulièrement vers un objectif','Débattre sans jamais parvenir à une décision','Alterner les responsabilités au sein de l\'équipe','Faire des réunions courtes et efficaces'],
+    answer:1
   },
   {
-    q:'Quelle expression signifie <strong>ignorer volontairement</strong> ?',
-    opts:["To talk shop","To get cold feet","To turn a blind eye","To seize the day"],
-    ans:2
+    q:'Quelle expression signifie <em>aller droit au but</em> ?',
+    options:['First things first','The ball is in his court','Let\'s cut to the chase','To learn the ropes'],
+    answer:2
   },
   {
-    q:'Complétez : "The team is completely ________ — three deadlines this week alone."',
-    opts:["in deep water","seizing the day","drinking from a firehose","slammed"],
-    ans:3
+    q:'Complétez : <em>"Don\'t ________ about the rebrand — the announcement isn\'t until Thursday."</em>',
+    options:['skate on thin ice','spill the beans','take one for the team','go round in circles'],
+    answer:1
   },
   {
-    q:'Que signifie <em>"It\'s not my cup of tea"</em> ?',
-    opts:["C'est trop cher pour moi","Ce n'est pas ma tasse de thé / ce n'est pas mon truc","C'est parfait pour moi","Je suis débordé"],
-    ans:1
+    q:'Que signifie <strong>"to skate on thin ice"</strong> ?',
+    options:['Travailler efficacement sous pression','S\'aventurer sur un terrain risqué ou délicat','Apprendre les ficelles du métier','Tenir quelqu\'un informé en temps réel'],
+    answer:1
   },
   {
-    q:'Que signifie <em>"to be drinking from a firehose"</em> ?',
-    opts:["Éteindre une crise rapidement","Avoir très soif","Être submergé d'informations","Être épuisé physiquement"],
-    ans:2
+    q:'Quelle expression signifie <em>ne pas être au courant</em> ?',
+    options:['To keep someone posted','To loop someone in','To be out of the loop','To take one for the team'],
+    answer:2
   },
   {
-    q:'Quelle expression correspond à <strong>ne pas se fier aux apparences</strong> ?',
-    opts:["Go down in flames","We are in deep water","Don\'t judge a book by its cover","Seize the day"],
-    ans:2
+    q:'Complétez : <em>"I\'ve been travelling all week — can someone ________ me ________ on the project status?"</em>',
+    options:['loop … out','cut … through','keep … posted','bring … around'],
+    answer:2
   }
 ];
 
 function render(){
-  const div=document.getElementById('quiz');
-  div.innerHTML='';
+  const quiz=document.getElementById('quiz');
+  quiz.innerHTML='';
   questions.forEach((q,i)=>{
-    let opts=q.opts.map((o,j)=>`<label id="lbl_${i}_${j}"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join('');
-    div.innerHTML+=`<div class="card" id="card_${i}"><p>Q${i+1}. ${q.q}</p>${opts}<div class="answer-note" id="note_${i}" style="display:none"></div></div>`;
+    const card=document.createElement('div');
+    card.className='card';
+    card.innerHTML=`<div class="q-num">Question ${i+1} / ${questions.length}</div><div class="q-text">${q.q}</div>`+
+      q.options.map((opt,j)=>`<label id="lbl-${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${opt}</label>`).join('');
+    quiz.appendChild(card);
   });
 }
 
@@ -82,29 +85,28 @@ function validate(){
   questions.forEach((q,i)=>{
     const sel=document.querySelector(`input[name="q${i}"]:checked`);
     if(!sel){allAnswered=false;return;}
-    const val=parseInt(sel.value);
-    for(let j=0;j<q.opts.length;j++){
-      const lbl=document.getElementById(`lbl_${i}_${j}`);
+    const chosen=parseInt(sel.value);
+    q.options.forEach((_,j)=>{
+      const lbl=document.getElementById(`lbl-${i}-${j}`);
       lbl.style.pointerEvents='none';
-      if(j===q.ans){lbl.className='correct';}
-      else if(j===val&&val!==q.ans){lbl.className='wrong';}
+      if(j===q.answer){lbl.className='correct';}
+      else if(j===chosen&&chosen!==q.answer){lbl.className='wrong';}
+    });
+    if(chosen===q.answer)score++;
+    // show answer note if wrong
+    if(chosen!==q.answer){
+      const note=document.createElement('div');
+      note.className='answer-note';
+      note.textContent='✔ Bonne réponse : '+q.options[q.answer];
+      document.querySelector(`input[name="q${i}"]`).closest('.card').appendChild(note);
     }
-    const note=document.getElementById(`note_${i}`);
-    if(val===q.ans){
-      score++;
-      note.innerHTML='✅ Bonne réponse !';
-      note.style.color='#155724';
-    } else {
-      note.innerHTML=`❌ Mauvaise réponse. La bonne réponse est : <strong>${q.opts[q.ans]}</strong>`;
-      note.style.color='#721c24';
-    }
-    note.style.display='block';
   });
-  if(!allAnswered){alert('Veuillez répondre à toutes les questions avant de valider.');return;}
+  if(!allAnswered){alert('Merci de répondre à toutes les questions avant de valider.');return;}
   const box=document.getElementById('score-box');
   box.style.display='block';
-  const emoji=score===6?'🏆':score>=4?'👍':'💪';
-  box.innerHTML=`${emoji} Votre score : ${score} / ${questions.length}`;
+  const pct=Math.round(score/questions.length*100);
+  let emoji=pct===100?'🏆':pct>=50?'👍':'💪';
+  box.textContent=`${emoji} Votre score : ${score} / ${questions.length} (${pct}%)`;
   document.getElementById('btn-validate').style.display='none';
   document.getElementById('btn-reset').style.display='block';
   box.scrollIntoView({behavior:'smooth'});
@@ -118,6 +120,8 @@ function reset(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+document.getElementById('btn-validate').addEventListener('click',validate);
+document.getElementById('btn-reset').addEventListener('click',reset);
 render();
 </script>
 </body>
