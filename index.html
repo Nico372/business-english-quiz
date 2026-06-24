@@ -7,102 +7,199 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
-h1{color:#2c5f8a;text-align:center;margin-bottom:6px;font-size:1.4em}
-p.subtitle{text-align:center;color:#555;margin-bottom:20px;font-size:.95em}
-.question{background:#fff;border-radius:8px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
-.question p{font-weight:bold;margin-bottom:10px;line-height:1.4}
-label{display:block;padding:7px 10px;border-radius:5px;cursor:pointer;margin-bottom:5px;border:1px solid #ddd;background:#fafafa;transition:background .2s}
+h1{color:#2c5f8a;text-align:center;font-size:1.4em;margin-bottom:6px}
+p.subtitle{text-align:center;color:#555;font-size:.9em;margin-bottom:20px}
+.card{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.q-num{font-weight:bold;color:#2c5f8a;margin-bottom:8px;font-size:.95em}
+.q-text{margin-bottom:10px;font-size:.95em;line-height:1.4}
+label{display:block;padding:8px 10px;border-radius:6px;margin-bottom:6px;cursor:pointer;border:1px solid #ddd;font-size:.9em;transition:background .2s}
 label:hover{background:#e8f0fe}
-label.correct{background:#d4edda;border-color:#28a745;color:#155724}
-label.wrong{background:#f8d7da;border-color:#dc3545;color:#721c24}
-label.show-correct{background:#d4edda;border-color:#28a745;color:#155724}
-.feedback{margin-top:8px;font-size:.88em;font-style:italic;color:#444}
-#score-box{background:#2c5f8a;color:#fff;border-radius:8px;padding:16px;text-align:center;margin-bottom:16px;font-size:1.2em;font-weight:bold}
-.btn{display:block;width:100%;max-width:340px;margin:0 auto 12px;padding:12px;border:none;border-radius:8px;font-size:1em;cursor:pointer;font-weight:bold}
-#btn-validate{background:#2c5f8a;color:#fff}
-#btn-validate:hover{background:#1e4570}
-#btn-reset{background:#e07b00;color:#fff;display:none}
-#btn-reset:hover{background:#b55f00}
+input[type=radio]{margin-right:8px}
+.correct{background:#d4edda!important;border-color:#28a745!important;color:#155724}
+.wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24}
+.answer-info{margin-top:8px;font-size:.85em;font-weight:bold;color:#2c5f8a}
+.score-box{background:#2c5f8a;color:#fff;border-radius:10px;padding:16px;text-align:center;margin-bottom:16px;font-size:1.1em}
+.btn{display:block;width:100%;padding:13px;border:none;border-radius:8px;font-size:1em;cursor:pointer;margin-bottom:10px;font-weight:bold}
+.btn-validate{background:#2c5f8a;color:#fff}
+.btn-validate:hover{background:#1e4570}
+.btn-reset{background:#e07b00;color:#fff}
+.btn-reset:hover{background:#b85f00}
+#score-area{display:none}
 </style>
 </head>
 <body>
 <h1>🧠 Quiz Business English du jour</h1>
 <p class="subtitle">Idioms &amp; Proverbs — Testez vos 10 expressions !</p>
-<div id="score-box" style="display:none"></div>
+<div id="score-area" class="score-box"></div>
 <div id="quiz"></div>
-<button class="btn" id="btn-validate">Valider mes réponses</button>
-<button class="btn" id="btn-reset">Recommencer</button>
+<button class="btn btn-validate" id="btn-validate">Valider mes réponses</button>
+<button class="btn btn-reset" id="btn-reset" style="display:none">🔄 Recommencer</button>
+
 <script>
-const questions=[
-{q:'Que signifie <em>"to stay ahead of the curve"</em> ?',opts:['Suivre les tendances au moment où elles apparaissent','Anticiper les changements et garder une longueur d\'avance','Analyser les performances passées en détail','Rattraper ses concurrents rapidement'],correct:1},
-{q:'Quelle expression signifie <strong>quoi qu\'il arrive</strong> ?',opts:['Every cloud has a silver lining','There\'s no such thing as a free lunch','Come rain or shine','It\'s a perfect storm'],correct:2},
-{q:'Complétez : "That production house will cost ________ and ________ — we\'ll need to justify it."',opts:['an arm … a leg','a hand … a foot','a toe … a finger','an eye … a tooth'],correct:0},
-{q:'Vrai ou Faux : <em>"It\'s a perfect storm"</em> décrit une situation où tout se passe étonnamment bien.',opts:['Vrai — tout va pour le mieux','Faux — c\'est la combinaison de facteurs négatifs créant une situation catastrophique','Vrai — c\'est une tempête parfaite de bonnes nouvelles','Faux — cela signifie simplement qu\'il pleut'],correct:1},
-{q:'Que signifie <em>"there\'s no such thing as a free lunch"</em> ?',opts:['Le client doit toujours payer les déjeuners d\'équipe','Les budgets doivent inclure la restauration','Rien ne vient sans effort ou contrepartie','Il faut toujours négocier les prix'],correct:2},
-{q:'Complétez : "The project launched late, and ________ insult to injury, the brief changed the same day."',opts:['to bring','to run','to add','to give'],correct:2},
-{q:'Quelle expression signifie <strong>être aligné / partager la même compréhension</strong> ?',opts:['To kick off','Let\'s call it a day','Come rain or shine','To be on the same page'],correct:3},
-{q:'Que signifie <em>"every cloud has a silver lining"</em> ?',opts:['Le mauvais temps affecte toujours le moral de l\'équipe','Même les situations difficiles ont un aspect positif','Il faut toujours analyser les données avant de décider','Les nuages cachent toujours une opportunité financière'],correct:1},
-{q:'Vrai ou Faux : <em>"Let\'s break the ice"</em> signifie mettre fin à une réunion plus tôt que prévu.',opts:['Vrai — on abrège la réunion','Faux — cela signifie détendre l\'atmosphère lors d\'une première rencontre','Vrai — on annule l\'ordre du jour','Faux — cela signifie lancer un nouveau projet'],correct:1},
-{q:'Complétez : "Right, we\'ve got a lot to cover, so let\'s ________ and get into the agenda."',opts:['call it a day','break the ice','kick off','add insult to injury'],correct:2}
+const questions = [
+  {
+    q: 'Que signifie <strong>"to be on the ball"</strong> ?',
+    options: [
+      "Se concentrer uniquement sur des projets sportifs",
+      "Être réactif, efficace et toujours au courant de ce qui se passe",
+      "Être le dernier à réagir en réunion",
+      "Faire une erreur de débutant"
+    ],
+    correct: 1
+  },
+  {
+    q: 'Quelle expression signifie <strong>« mieux vaut tard que jamais »</strong> ?',
+    options: [
+      "Hang in there",
+      "No pain, no gain",
+      "Better late than never",
+      "Get your act together"
+    ],
+    correct: 2
+  },
+  {
+    q: 'Complétez la phrase : <strong>"________ a long story short, the campaign was delayed and we had to renegotiate the media plan."</strong>',
+    options: [
+      "To cut",
+      "To make",
+      "To sum",
+      "To tell"
+    ],
+    correct: 0
+  },
+  {
+    q: '<strong>"It\'s not rocket science"</strong> signifie que quelque chose est extrêmement complexe et réservé aux experts. Vrai ou faux ?',
+    options: [
+      "Vrai — c'est très compliqué",
+      "Faux — cela signifie que ce n'est PAS compliqué du tout",
+      "Vrai — il faut être scientifique",
+      "Faux — cela ne parle pas de complexité"
+    ],
+    correct: 1
+  },
+  {
+    q: 'Que signifie <strong>"get your act together"</strong> ?',
+    options: [
+      "Répéter soigneusement une présentation",
+      "S\'organiser et agir de manière plus efficace et sérieuse",
+      "Répartir les rôles au sein d\'une équipe créative",
+      "Annuler un projet en cours"
+    ],
+    correct: 1
+  },
+  {
+    q: 'Complétez : <strong>"Let\'s give him the ________ of the doubt for now."</strong>',
+    options: [
+      "credit",
+      "advantage",
+      "benefit",
+      "profit"
+    ],
+    correct: 2
+  },
+  {
+    q: 'Quelle expression signifie <strong>« préparer toutes les étapes avant de se lancer »</strong> ?',
+    options: [
+      "To pick the low-hanging fruit",
+      "To prioritize",
+      "To get your ducks in a row",
+      "To hang in there"
+    ],
+    correct: 2
+  },
+  {
+    q: 'Que signifie <strong>"no pain, no gain"</strong> ?',
+    options: [
+      "Il faut éviter les situations difficiles au travail",
+      "Les résultats nécessitent des efforts",
+      "La douleur indique que quelque chose a mal tourné",
+      "On doit toujours prendre le chemin le plus facile"
+    ],
+    correct: 1
+  },
+  {
+    q: '<strong>"Hang in there"</strong> s\'utilise pour encourager quelqu\'un qui traverse une période difficile. Vrai ou faux ?',
+    options: [
+      "Faux — c\'est une critique négative",
+      "Vrai — c\'est une expression d\'encouragement",
+      "Faux — cela signifie abandonner",
+      "Vrai — mais uniquement dans un contexte sportif"
+    ],
+    correct: 1
+  },
+  {
+    q: 'Complétez : <strong>"Let\'s ________ the low-hanging fruit and get some quick wins first."</strong>',
+    options: [
+      "throw away",
+      "ignore",
+      "grab onto",
+      "pick"
+    ],
+    correct: 3
+  }
 ];
 
-function render(){
-  const container=document.getElementById('quiz');
-  container.innerHTML='';
-  questions.forEach((q,i)=>{
-    const div=document.createElement('div');
-    div.className='question';
-    div.innerHTML=`<p>Question ${i+1} / ${questions.length} — ${q.q}</p>`;
-    q.opts.forEach((opt,j)=>{
-      const id=`q${i}_o${j}`;
-      const lbl=document.createElement('label');
-      lbl.setAttribute('for',id);
-      lbl.innerHTML=`<input type="radio" name="q${i}" id="${id}" value="${j}" style="margin-right:8px">${opt}`;
-      div.appendChild(lbl);
+const quizEl = document.getElementById('quiz');
+const scoreArea = document.getElementById('score-area');
+const btnValidate = document.getElementById('btn-validate');
+const btnReset = document.getElementById('btn-reset');
+
+function render() {
+  quizEl.innerHTML = '';
+  questions.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<div class="q-num">Question ${i+1} / ${questions.length}</div><div class="q-text">${q.q}</div>`;
+    q.options.forEach((opt, j) => {
+      const lbl = document.createElement('label');
+      lbl.id = `lbl-${i}-${j}`;
+      lbl.innerHTML = `<input type="radio" name="q${i}" value="${j}"> ${opt}`;
+      card.appendChild(lbl);
     });
-    div.innerHTML+=`<div class="feedback" id="fb${i}"></div>`;
-    container.appendChild(div);
+    const info = document.createElement('div');
+    info.className = 'answer-info';
+    info.id = `info-${i}`;
+    card.appendChild(info);
+    quizEl.appendChild(card);
   });
 }
 
-document.getElementById('btn-validate').addEventListener('click',()=>{
-  let score=0;
-  const qDivs=document.querySelectorAll('.question');
-  questions.forEach((q,i)=>{
-    const sel=document.querySelector(`input[name="q${i}"]:checked`);
-    const fb=document.getElementById(`fb${i}`);
-    const labels=qDivs[i].querySelectorAll('label');
-    labels.forEach(l=>l.style.pointerEvents='none');
-    if(!sel){
-      fb.textContent='⚠️ Sans réponse. La bonne réponse est : '+q.opts[q.correct];
-      labels[q.correct].classList.add('show-correct');
-      return;
-    }
-    const chosen=parseInt(sel.value);
-    if(chosen===q.correct){
+btnValidate.addEventListener('click', () => {
+  let score = 0;
+  let allAnswered = true;
+  questions.forEach((q, i) => {
+    const radios = document.querySelectorAll(`input[name="q${i}"]`);
+    let chosen = -1;
+    radios.forEach(r => { if(r.checked) chosen = parseInt(r.value); r.disabled = true; });
+    if(chosen === -1) allAnswered = false;
+    const info = document.getElementById(`info-${i}`);
+    q.options.forEach((_, j) => {
+      const lbl = document.getElementById(`lbl-${i}-${j}`);
+      lbl.classList.remove('correct','wrong');
+      if(j === q.correct) lbl.classList.add('correct');
+      else if(j === chosen && chosen !== q.correct) lbl.classList.add('wrong');
+    });
+    if(chosen === q.correct) {
       score++;
-      labels[chosen].classList.add('correct');
-      fb.textContent='✅ Bonne réponse !';
+      info.style.color='#155724';
+      info.textContent='✅ Bonne réponse !';
     } else {
-      labels[chosen].classList.add('wrong');
-      labels[q.correct].classList.add('show-correct');
-      fb.textContent='❌ Mauvaise réponse. La bonne réponse est : '+q.opts[q.correct];
+      info.style.color='#721c24';
+      info.textContent=`❌ Mauvaise réponse. La bonne réponse : « ${q.options[q.correct]} »`;
     }
   });
-  const box=document.getElementById('score-box');
-  const pct=Math.round(score/questions.length*100);
-  const emoji=pct>=80?'🎯':pct>=50?'👍':'💪';
-  box.innerHTML=`${emoji} Score : ${score} / ${questions.length} (${pct}%)`;
-  box.style.display='block';
-  document.getElementById('btn-validate').style.display='none';
-  document.getElementById('btn-reset').style.display='block';
-  box.scrollIntoView({behavior:'smooth'});
+  const emoji = score >= 5 ? '🎉' : score >= 3 ? '👍' : '💪';
+  scoreArea.style.display='block';
+  scoreArea.innerHTML=`${emoji} Votre score : <strong>${score} / ${questions.length}</strong> — ${score===questions.length?'Parfait !':score>=4?'Très bien !':'Continuez vos efforts !'}`;
+  btnValidate.style.display='none';
+  btnReset.style.display='block';
+  scoreArea.scrollIntoView({behavior:'smooth'});
 });
 
-document.getElementById('btn-reset').addEventListener('click',()=>{
-  document.getElementById('score-box').style.display='none';
-  document.getElementById('btn-validate').style.display='block';
-  document.getElementById('btn-reset').style.display='none';
+btnReset.addEventListener('click', () => {
+  scoreArea.style.display='none';
+  btnValidate.style.display='block';
+  btnReset.style.display='none';
   render();
   window.scrollTo({top:0,behavior:'smooth'});
 });
