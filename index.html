@@ -7,64 +7,62 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
-h1{color:#2c5f8a;text-align:center;margin-bottom:6px;font-size:1.4em}
-p.subtitle{text-align:center;color:#555;margin-bottom:20px;font-size:.9em}
+h1{color:#2c5f8a;text-align:center;margin-bottom:8px;font-size:1.4em}
+p.subtitle{text-align:center;color:#555;margin-bottom:20px;font-size:.95em}
 .question{background:#fff;border-radius:8px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
 .question p{font-weight:bold;margin-bottom:10px;line-height:1.4}
-label{display:block;padding:8px 10px;border-radius:6px;cursor:pointer;margin-bottom:6px;border:1px solid #ddd;transition:background .2s}
-label:hover{background:#eef3fb}
+label{display:block;padding:7px 10px;border-radius:5px;cursor:pointer;margin-bottom:5px;border:1px solid #ddd;background:#fafafa;transition:background .2s}
+label:hover{background:#e8f0fe}
 input[type=radio]{margin-right:8px}
-.correct{background:#d4edda!important;border-color:#28a745!important}
-.wrong{background:#f8d7da!important;border-color:#dc3545!important}
-.feedback{margin-top:8px;font-size:.88em;padding:6px 10px;border-radius:4px}
-.feedback.ok{color:#155724;background:#d4edda}
-.feedback.ko{color:#721c24;background:#f8d7da}
-#score-box{text-align:center;background:#2c5f8a;color:#fff;padding:14px;border-radius:8px;margin-bottom:16px;font-size:1.2em;font-weight:bold}
-.btn{display:block;width:100%;max-width:320px;margin:0 auto 12px;padding:12px;border:none;border-radius:8px;font-size:1em;cursor:pointer;font-weight:bold}
+.correct{background:#d4edda!important;border-color:#28a745!important;color:#155724}
+.wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24}
+.answer-info{margin-top:8px;font-size:.88em;color:#2c5f8a;font-weight:bold}
+#score-box{background:#2c5f8a;color:#fff;border-radius:8px;padding:16px;text-align:center;margin-bottom:16px;font-size:1.1em;display:none}
+.btn{display:block;width:100%;padding:13px;border:none;border-radius:7px;font-size:1em;cursor:pointer;margin-top:6px;font-weight:bold}
 #btn-validate{background:#2c5f8a;color:#fff}
-#btn-validate:hover{background:#1e4570}
+#btn-validate:hover{background:#1e4470}
 #btn-reset{background:#e07b00;color:#fff;display:none}
-#btn-reset:hover{background:#b85e00}
+#btn-reset:hover{background:#b56200}
 </style>
 </head>
 <body>
 <h1>🧠 Quiz Business English du jour</h1>
-<p class="subtitle">Expressions sur le temps, les délais &amp; révisions — 6 questions</p>
-<div id="score-box" style="display:none"></div>
+<p class="subtitle">Négociation, Accord &amp; Prise de décision — 6 questions</p>
+<div id="score-box"></div>
 <div id="quiz"></div>
-<button class="btn" id="btn-validate">Valider mes réponses</button>
-<button class="btn" id="btn-reset">Recommencer</button>
+<button class="btn" id="btn-validate" onclick="validate()">Valider mes réponses</button>
+<button class="btn" id="btn-reset" onclick="reset()">Recommencer</button>
 <script>
 const questions=[
   {
-    q:"Que signifie <em>\"to fast-track\"</em> ?",
-    opts:["Ralentir un processus pour garantir la qualité","Accélérer un processus au-delà du calendrier normal","Annuler complètement un projet","Déléguer une tâche à un autre département"],
+    q:'Que signifie <em>"to get buy-in"</em> ?',
+    opts:["Acheter une part dans une entreprise","Convaincre les parties prenantes d'adhérer à une idée","Accepter les conditions d'un client","Donner son accord formel sur un livrable"],
     ans:1
   },
   {
-    q:"Quelle expression signifie <em>\"en cours, dans les tuyaux\"</em> ?",
-    opts:["All systems go","Make-or-break time","In the pipeline","Behind schedule"],
+    q:'Quelle expression signifie <strong>donner le feu vert</strong> ?',
+    opts:["To push back","To sign off on something","To give the green light","To meet halfway"],
     ans:2
   },
   {
-    q:"Complétez la phrase : <em>\"The assets are approved and the media is booked — ________ systems go for Monday's launch.\"</em>",
-    opts:["every","full","all","both"],
+    q:'Complétez : "The budget is tight, but I think we can ________ and focus on digital-first executions."',
+    opts:["push back","sign off","meet halfway","go the extra mile"],
     ans:2
   },
   {
-    q:"Que signifie <em>\"make-or-break time\"</em> ?",
-    opts:["Un moment pour célébrer le succès","Un bon moment pour faire une pause","Un moment décisif qui déterminera le succès ou l'échec","Une période de planification à long terme"],
-    ans:2
+    q:'Que signifie <em>"deal-breaker"</em> ?',
+    opts:["Une clause acceptée par les deux parties","Une condition non négociable qui rend un accord impossible","Une idée créative qui divise l'équipe","Un délai impossible à tenir"],
+    ans:1
   },
   {
-    q:"Quelle expression signifie <em>\"partie prenante\"</em> ?",
-    opts:["Decision-maker","Bandwidth","Rush job","Stakeholder"],
+    q:'Quelle expression signifie <strong>faire un effort supplémentaire</strong> ?',
+    opts:["All hands on deck","To hit the mark","To manage expectations","To go the extra mile"],
     ans:3
   },
   {
-    q:"Complétez la phrase : <em>\"Given the client's urgent request, we'll need to ________ the social assets and ________ the internal newsletter.\"</em>",
-    opts:["deprioritize / prioritize","fast-track / pipeline","prioritize / deprioritize","onboard / pitch"],
-    ans:2
+    q:'Complétez : "We\'re still waiting for the CEO to ________ the revised scope of work before we brief the studio."',
+    opts:["push back on","run through","give the green light to","sign off on"],
+    ans:3
   }
 ];
 
@@ -72,62 +70,48 @@ function render(){
   const quiz=document.getElementById('quiz');
   quiz.innerHTML='';
   questions.forEach((q,i)=>{
-    const div=document.createElement('div');
-    div.className='question';
-    div.innerHTML=`<p>Question ${i+1}. ${q.q}</p>`+
-      q.opts.map((o,j)=>`<label id="lbl-${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join('');
-    quiz.appendChild(div);
+    let opts=q.opts.map((o,j)=>`<label id="lbl-${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join('');
+    quiz.innerHTML+=`<div class="question" id="q${i}"><p>Q${i+1}. ${q.q}</p>${opts}<div class="answer-info" id="info-${i}" style="display:none"></div></div>`;
   });
-  document.getElementById('score-box').style.display='none';
-  document.getElementById('btn-validate').style.display='block';
-  document.getElementById('btn-reset').style.display='none';
-  document.querySelectorAll('.feedback').forEach(f=>f.remove());
 }
 
-document.getElementById('btn-validate').addEventListener('click',()=>{
+function validate(){
   let score=0;
   let allAnswered=true;
   questions.forEach((q,i)=>{
     const sel=document.querySelector(`input[name="q${i}"]:checked`);
     if(!sel){allAnswered=false;return;}
     const chosen=parseInt(sel.value);
-    const correct=q.ans;
-    // reset labels
-    q.opts.forEach((_,j)=>{
+    const info=document.getElementById(`info-${i}`);
+    for(let j=0;j<q.opts.length;j++){
       const lbl=document.getElementById(`lbl-${i}-${j}`);
-      lbl.classList.remove('correct','wrong');
-    });
-    const chosenLbl=document.getElementById(`lbl-${i}-${chosen}`);
-    const correctLbl=document.getElementById(`lbl-${i}-${correct}`);
-    let fb=document.createElement('div');
-    fb.className='feedback';
-    if(chosen===correct){
-      score++;
-      chosenLbl.classList.add('correct');
-      fb.className='feedback ok';
-      fb.textContent='✅ Bonne réponse !';
-    } else {
-      chosenLbl.classList.add('wrong');
-      correctLbl.classList.add('correct');
-      fb.className='feedback ko';
-      fb.textContent=`❌ Mauvaise réponse. La bonne réponse était : "${q.opts[correct]}"`;
+      if(j===q.ans) lbl.classList.add('correct');
+      else if(j===chosen && chosen!==q.ans) lbl.classList.add('wrong');
+      lbl.querySelector('input').disabled=true;
     }
-    const qDiv=chosenLbl.closest('.question');
-    const old=qDiv.querySelector('.feedback');
-    if(old)old.remove();
-    qDiv.appendChild(fb);
-    document.querySelectorAll(`input[name="q${i}"]`).forEach(r=>r.disabled=true);
+    if(chosen===q.ans){
+      score++;
+      info.textContent='✅ Bonne réponse !';
+    } else {
+      info.textContent='❌ Mauvaise réponse. La bonne réponse est : '+q.opts[q.ans];
+    }
+    info.style.display='block';
   });
   if(!allAnswered){alert('Veuillez répondre à toutes les questions avant de valider.');return;}
   const box=document.getElementById('score-box');
   box.style.display='block';
-  box.textContent=`🎯 Score : ${score} / ${questions.length}`;
+  box.innerHTML=`🎯 Votre score : <strong>${score} / ${questions.length}</strong> — ${score===questions.length?'Parfait ! 🏆':score>=4?'Très bien ! 💪':score>=2?'Pas mal, continuez ! 📚':'Révisez les expressions et réessayez ! 🔁'}`;
   document.getElementById('btn-validate').style.display='none';
   document.getElementById('btn-reset').style.display='block';
-  box.scrollIntoView({behavior:'smooth'});
-});
+}
 
-document.getElementById('btn-reset').addEventListener('click',render);
+function reset(){
+  document.getElementById('score-box').style.display='none';
+  document.getElementById('btn-validate').style.display='block';
+  document.getElementById('btn-reset').style.display='none';
+  render();
+}
+
 render();
 </script>
 </body>
