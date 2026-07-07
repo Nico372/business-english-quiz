@@ -7,81 +7,63 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
-h1{color:#2c5f8a;text-align:center;font-size:1.4em;margin-bottom:6px}
-.subtitle{text-align:center;color:#555;font-size:.9em;margin-bottom:20px}
+h1{color:#2c5f8a;text-align:center;font-size:1.3em;margin-bottom:6px}
+p.subtitle{text-align:center;color:#555;font-size:.9em;margin-bottom:20px}
 .question{background:#fff;border-radius:8px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
 .question p{font-weight:bold;margin-bottom:10px;font-size:.95em}
-label{display:block;padding:7px 10px;border-radius:5px;cursor:pointer;margin-bottom:5px;font-size:.9em;border:1px solid #ddd;transition:background .2s}
-label:hover{background:#eef3f8}
+label{display:block;padding:7px 10px;margin-bottom:5px;border-radius:5px;cursor:pointer;font-size:.9em;border:1px solid #ddd;transition:background .2s}
+label:hover{background:#e8f0fe}
 input[type=radio]{margin-right:8px}
 .correct{background:#d4edda!important;border-color:#28a745!important;color:#155724}
 .wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24}
-.answer-hint{margin-top:8px;font-size:.85em;color:#2c5f8a;font-weight:bold}
-#score-box{background:#2c5f8a;color:#fff;border-radius:8px;padding:16px;text-align:center;margin-bottom:16px;font-size:1.1em}
-.btn{display:block;width:100%;max-width:320px;margin:10px auto;padding:12px;border:none;border-radius:6px;font-size:1em;cursor:pointer;font-weight:bold}
+.answer-info{margin-top:8px;font-size:.85em;color:#2c5f8a;font-style:italic}
+#score-box{background:#2c5f8a;color:#fff;border-radius:8px;padding:16px;text-align:center;font-size:1.1em;margin-bottom:16px;display:none}
+.btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+button{padding:11px 24px;border:none;border-radius:6px;cursor:pointer;font-size:1em;font-weight:bold}
 #btn-validate{background:#2c5f8a;color:#fff}
-#btn-validate:hover{background:#1e4570}
-#btn-reset{background:#e07b00;color:#fff;display:none}
-#btn-reset:hover{background:#b86200}
+#btn-restart{background:#e07b00;color:#fff;display:none}
+button:hover{opacity:.88}
 </style>
 </head>
 <body>
 <h1>🧠 Quiz Business English du jour</h1>
-<p class="subtitle">Idioms &amp; Everyday Expressions — Havas International</p>
-<div id="score-box" style="display:none"></div>
+<p class="subtitle">Meetings &amp; Collaboration — 6 questions sur les 10 expressions du jour</p>
+<div id="score-box"></div>
 <div id="quiz"></div>
-<button class="btn" id="btn-validate">Valider mes réponses</button>
-<button class="btn" id="btn-reset">Recommencer</button>
+<div class="btns">
+  <button id="btn-validate">Valider mes réponses</button>
+  <button id="btn-restart">Recommencer</button>
+</div>
 <script>
 const questions=[
   {
-    q:'Que signifie <em>"to start from scratch"</em> ?',
-    options:["Apporter des ajustements mineurs à un plan","Recommencer depuis le début","Accélérer un projet","Déléguer une tâche urgente"],
+    q:"Que signifie <em>\"action items\"</em> dans le contexte d'une réunion ?",
+    options:["Des éléments du menu de déjeuner","Des tâches précises assignées à des personnes, avec des délais","Des slides à mettre à jour après l'appel","Des points à soulever lors du prochain meeting"],
     answer:1
   },
   {
-    q:'Complétez : "We don\'t need to _____ the _____ — let\'s build on what worked."',
-    options:["boil / ocean","cut / corners","reinvent / wheel","give / shot"],
+    q:"Complétez la phrase : \"That's a very detailed question — let's ________ this ________ and set up a separate call.\"",
+    options:["park / now","circle / back","take / offline","push / forward"],
     answer:2
   },
   {
-    q:'Quelle expression signifie <em>"bâcler ou rogner sur la qualité pour aller plus vite"</em> ?',
-    options:["To be swamped","To cut corners","To boil the ocean","To start from scratch"],
+    q:"Quelle expression utiliseriez-vous pour résumer les points clés à retenir après une réunion ?",
+    options:["Action items","Fair enough","Takeaways","My bad"],
+    answer:2
+  },
+  {
+    q:"Que signifie <em>\"to your point\"</em> ?",
+    options:["Pour introduire un sujet totalement nouveau","Pour rebondir sur ce que vient de dire l'interlocuteur","Pour contredire poliment quelqu'un","Pour clore une discussion"],
     answer:1
   },
   {
-    q:'Que signifie <em>"I\'m on it"</em> ?',
-    options:["Je suis d\'accord avec toi","J\'ai besoin de plus d\'informations","Je m\'en occupe","Laisse-moi réfléchir"],
+    q:"Complétez : \"________ — I forgot to include the legal team in the email chain. I'll loop them in now.\"",
+    options:["Fair enough","Does that work","My bad","To your point"],
     answer:2
   },
   {
-    q:'Quelle expression signifie <em>"s\'attaquer à une tâche trop grosse pour soi"</em> ?',
-    options:["To reinvent the wheel","To have a lot on your plate","To bite off more than one can chew","To be slammed"],
-    answer:2
-  },
-  {
-    q:'Complétez : "Everyone is _____ right now — we need to phase the deliverables."',
-    options:["on it","slammed","from scratch","giving it a go"],
-    answer:1
-  },
-  {
-    q:'Que signifie <em>"Leave it with me"</em> ?',
-    options:["Demander à quelqu\'un d\'autre de gérer","Abandonner la tâche","Je prends ça en charge","Attendre la validation du client"],
-    answer:2
-  },
-  {
-    q:'<em>"To give it a shot"</em> et <em>"to give it a go"</em> signifient-ils la même chose ?',
-    options:["Non, leurs sens sont opposés","Oui, les deux signifient essayer quelque chose","Non, seul \"a shot\" signifie essayer","Non, \"a go\" signifie abandonner"],
-    answer:1
-  },
-  {
-    q:'Que signifie <em>"to have a lot on your plate"</em> ?',
-    options:["Avoir un grand appétit","Attendre un retour client","Avoir beaucoup de tâches ou responsabilités en même temps","Être en réunion toute la journée"],
-    answer:2
-  },
-  {
-    q:'Quelle expression signifie <em>"vouloir tout faire à la fois de façon irréaliste"</em> ?',
-    options:["To be swamped","To start from scratch","To boil the ocean","To cut corners"],
+    q:"Que signifie <em>\"elevator pitch\"</em> ?",
+    options:["Une présentation d'au moins une heure","Un pitch livré uniquement à un PDG","Un résumé bref et percutant d'une idée en 30 secondes","Un appel d'offres remporté grâce à une bonne présentation"],
     answer:2
   }
 ];
@@ -92,13 +74,15 @@ function render(){
   questions.forEach((q,i)=>{
     const div=document.createElement('div');
     div.className='question';
-    div.innerHTML=`<p>${i+1}. ${q.q}</p>`+
-      q.options.map((opt,j)=>`<label id="lbl-${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${opt}</label>`).join('');
+    div.innerHTML=`<p>Q${i+1}. ${q.q}</p>`+q.options.map((opt,j)=>`
+      <label id="lbl-${i}-${j}">
+        <input type="radio" name="q${i}" value="${j}"> ${opt}
+      </label>`).join('');
     quiz.appendChild(div);
   });
   document.getElementById('score-box').style.display='none';
-  document.getElementById('btn-reset').style.display='none';
-  document.getElementById('btn-validate').style.display='block';
+  document.getElementById('btn-validate').style.display='inline-block';
+  document.getElementById('btn-restart').style.display='none';
 }
 
 document.getElementById('btn-validate').addEventListener('click',()=>{
@@ -108,31 +92,37 @@ document.getElementById('btn-validate').addEventListener('click',()=>{
     const sel=document.querySelector(`input[name="q${i}"]:checked`);
     if(!sel){allAnswered=false;return;}
     const chosen=parseInt(sel.value);
-    for(let j=0;j<q.options.length;j++){
+    q.options.forEach((_,j)=>{
       const lbl=document.getElementById(`lbl-${i}-${j}`);
       lbl.style.pointerEvents='none';
-      if(j===q.answer){lbl.classList.add('correct');}
-      else if(j===chosen&&chosen!==q.answer){lbl.classList.add('wrong');}
+      if(j===q.answer){lbl.className='correct';}
+      else if(j===chosen&&chosen!==q.answer){lbl.className='wrong';}
+    });
+    // add answer info
+    const div=document.querySelector(`#lbl-${i}-${q.answer}`).parentElement;
+    let info=div.querySelector('.answer-info');
+    if(!info){
+      info=document.createElement('div');
+      info.className='answer-info';
+      div.appendChild(info);
     }
-    if(chosen===q.answer){score++;}
-    else{
-      const hint=document.createElement('div');
-      hint.className='answer-hint';
-      hint.textContent='✅ Bonne réponse : '+q.options[q.answer];
-      document.querySelectorAll(`input[name="q${i}"]`)[0].closest('.question').appendChild(hint);
+    if(chosen===q.answer){
+      score++;
+      info.textContent='✅ Bonne réponse !';
+    } else {
+      info.textContent=`❌ Bonne réponse : ${q.options[q.answer]}`;
     }
   });
-  if(!allAnswered){alert('Merci de répondre à toutes les questions avant de valider.');return;}
+  if(!allAnswered){alert('Veuillez répondre à toutes les questions avant de valider.');return;}
   const box=document.getElementById('score-box');
   box.style.display='block';
-  const pct=Math.round(score/questions.length*100);
-  box.innerHTML=`🎯 Votre score : <strong>${score}/${questions.length}</strong> (${pct}%)<br>${score===questions.length?'🏆 Parfait !':score>=4?'👍 Bon travail !':'💪 Continuez à pratiquer !'}`;
+  const emoji=score===6?'🏆':score>=4?'👍':'💪';
+  box.innerHTML=`${emoji} Votre score : <strong>${score} / ${questions.length}</strong> — ${score===6?'Parfait !':score>=4?'Très bien !':score>=2?'Continuez vos efforts !':'Révisez les expressions et réessayez !'}`;
   document.getElementById('btn-validate').style.display='none';
-  document.getElementById('btn-reset').style.display='block';
-  box.scrollIntoView({behavior:'smooth'});
+  document.getElementById('btn-restart').style.display='inline-block';
 });
 
-document.getElementById('btn-reset').addEventListener('click',render);
+document.getElementById('btn-restart').addEventListener('click',render);
 
 render();
 </script>
