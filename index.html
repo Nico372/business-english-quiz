@@ -7,40 +7,67 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
-h1{color:#2c5f8a;font-size:1.4em;margin-bottom:6px;text-align:center}
-p.subtitle{text-align:center;color:#555;margin-bottom:20px;font-size:.95em}
+h1{color:#2c5f8a;text-align:center;font-size:1.4em;margin-bottom:6px}
+.subtitle{text-align:center;color:#555;font-size:.9em;margin-bottom:20px}
 .question{background:#fff;border-radius:8px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
-.question p{font-weight:bold;margin-bottom:10px;font-size:.97em}
-label{display:block;padding:7px 10px;border-radius:5px;cursor:pointer;margin-bottom:5px;border:1px solid #ddd;font-size:.93em}
-label:hover{background:#eef3fb}
+.question p{font-weight:bold;margin-bottom:10px;font-size:.95em}
+label{display:block;padding:7px 10px;margin:4px 0;border-radius:5px;cursor:pointer;font-size:.9em;border:1px solid #ddd;transition:background .2s}
+label:hover{background:#e8f0fe}
 input[type=radio]{margin-right:8px}
 .correct{background:#d4edda!important;border-color:#28a745!important;color:#155724}
 .wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24}
-.answer-info{margin-top:8px;font-size:.88em;color:#2c5f8a;font-style:italic}
-#score-box{background:#2c5f8a;color:#fff;border-radius:8px;padding:16px;text-align:center;font-size:1.2em;font-weight:bold;margin-bottom:16px;display:none}
-.btn{display:block;width:100%;padding:13px;border:none;border-radius:7px;font-size:1em;cursor:pointer;font-weight:bold;margin-bottom:10px}
+.answer-info{margin-top:8px;font-size:.85em;color:#2c5f8a;font-style:italic}
+#score-box{background:#2c5f8a;color:#fff;text-align:center;border-radius:8px;padding:16px;margin-bottom:16px;font-size:1.1em;font-weight:bold}
+.btn{display:block;width:100%;padding:13px;font-size:1em;border:none;border-radius:7px;cursor:pointer;margin-top:6px;font-weight:bold}
 #btn-validate{background:#2c5f8a;color:#fff}
-#btn-validate:hover{background:#245079}
+#btn-validate:hover{background:#1e4570}
 #btn-reset{background:#e07b00;color:#fff;display:none}
-#btn-reset:hover{background:#c06a00}
+#btn-reset:hover{background:#b85f00}
 </style>
 </head>
 <body>
-<h1>Quiz Business English du jour</h1>
-<p class="subtitle">Créativité &amp; Idéation — 6 questions, 10 expressions</p>
-<div id="score-box"></div>
+<h1>🧠 Quiz Business English du jour</h1>
+<p class="subtitle">Thème : Meetings &amp; Discussions — 6 questions</p>
+<div id="score-box" style="display:none"></div>
 <div id="quiz"></div>
 <button class="btn" id="btn-validate">Valider mes réponses</button>
 <button class="btn" id="btn-reset">Recommencer</button>
+
 <script>
 const questions=[
-{q:'Que signifie <em>"blue-sky thinking"</em> ?',options:['Réfléchir à de la publicité extérieure','Une réflexion sans contraintes ni limites','Une révision de la stratégie médias','Un plan de lancement de produit'],answer:1},
-{q:'Complétez : <em>"Can I ________ a few ideas ________ you before I finalise the deck?"</em>',options:['put / forward','flesh / out','bounce / off','call / off'],answer:2},
-{q:'Quelle expression signifie <em>donner du corps à une idée</em> ?',options:['To spitball','To think outside the box','To put ideas on the table','To flesh something out'],answer:3},
-{q:'Que signifie <em>"North Star"</em> dans un contexte professionnel ?',options:["Un livrable mineur d'un projet",'Un objectif directeur qui guide toutes les décisions','Un indicateur de performance secondaire','Le nom d\'un outil de gestion de projet'],answer:1},
-{q:'<em>"Gotta bounce"</em> est-il approprié lors d\'une réunion formelle avec un client ?',options:['Oui, c\'est une expression neutre','Oui, si la réunion se passe bien','Non, c\'est une expression informelle/familière','Non, car ça signifie annuler la réunion'],answer:2},
-{q:'Quelle expression utiliser pour encourager tout le monde à proposer librement des idées sans jugement ?',options:['North Star','Let\'s call it a day','Let\'s put ideas on the table','Big picture'],answer:2}
+  {
+    q:'Que signifie <em>"to circle back"</em> ?',
+    options:["Annuler définitivement un sujet","Revenir sur un sujet plus tard","Recueillir les opinions de chacun","Dépasser l\'heure prévue"],
+    answer:1
+  },
+  {
+    q:'Complétez la phrase : <em>"That\'s a great point — let\'s ________ that for now and revisit it later."</em>',
+    options:["drop","table","park","skip"],
+    answer:2
+  },
+  {
+    q:'Quelle expression signifie <em>« mettre en pause, noter pour y revenir »</em> ?',
+    options:["To run overtime","To loop back","To put a pin in that","To postpone a meeting"],
+    answer:2
+  },
+  {
+    q:'Vrai ou faux : En anglais américain, <strong>"to table something"</strong> signifie aborder un sujet immédiatement.',
+    options:["Vrai","Faux — cela signifie reporter ou mettre de côté","Vrai, et c\'est pareil en anglais britannique","Faux — cela signifie annuler définitivement"],
+    answer:1
+  },
+  {
+    q:'Quelle expression signifie <em>« faire un effort supplémentaire »</em> ?',
+    options:["All hands on deck","To walk the talk","To go the extra mile","To put off a meeting"],
+    answer:2
+  },
+  {
+    q:'Complétez : <em>"The deadline moved up — it\'s ________ ________ on deck until Friday."</em>',
+    options:["every hand","all hands","full team","all people"],
+    answer:1
+  }
 ];
+
+const correctAnswers=questions.map(q=>q.answer);
 
 function render(){
   const quiz=document.getElementById('quiz');
@@ -48,48 +75,54 @@ function render(){
   questions.forEach((q,i)=>{
     const div=document.createElement('div');
     div.className='question';
-    div.innerHTML=`<p>Q${i+1}. ${q.q}</p>`+q.options.map((o,j)=>`<label id="lbl-${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join('');
+    div.innerHTML=`<p>Question ${i+1} : ${q.q}</p>`+
+      q.options.map((opt,j)=>`<label id="lbl-${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${opt}</label>`).join('');
     quiz.appendChild(div);
   });
+  document.getElementById('score-box').style.display='none';
+  document.getElementById('btn-validate').style.display='block';
+  document.getElementById('btn-reset').style.display='none';
 }
 
 document.getElementById('btn-validate').addEventListener('click',()=>{
   let score=0;
   let allAnswered=true;
-  questions.forEach((q,i)=>{
+  const results=questions.map((q,i)=>{
     const sel=document.querySelector(`input[name="q${i}"]:checked`);
-    if(!sel){allAnswered=false;return;}
-    const chosen=parseInt(sel.value);
-    q.options.forEach((_,j)=>{
-      const lbl=document.getElementById(`lbl-${i}-${j}`);
-      lbl.style.pointerEvents='none';
-      if(j===q.answer){lbl.classList.add('correct');}
-      else if(j===chosen&&chosen!==q.answer){lbl.classList.add('wrong');}
-    });
-    if(chosen===q.answer){score++;}
-    else{
-      const info=document.createElement('div');
-      info.className='answer-info';
-      info.textContent='✅ Bonne réponse : '+q.options[q.answer];
-      document.querySelector(`input[name="q${i}"]`).closest('.question').appendChild(info);
-    }
+    if(!sel){allAnswered=false;return null;}
+    return parseInt(sel.value);
   });
   if(!allAnswered){alert('Veuillez répondre à toutes les questions.');return;}
+  
+  questions.forEach((q,i)=>{
+    const chosen=results[i];
+    const correct=correctAnswers[i];
+    q.options.forEach((_,j)=>{
+      const lbl=document.getElementById(`lbl-${i}-${j}`);
+      lbl.querySelector('input').disabled=true;
+      if(j===correct){lbl.className='correct';}
+      else if(j===chosen&&chosen!==correct){lbl.className='wrong';}
+    });
+    if(chosen===correct)score++;
+    if(chosen!==correct){
+      const div=document.querySelectorAll('.question')[i];
+      const info=document.createElement('div');
+      info.className='answer-info';
+      info.textContent='✅ Bonne réponse : '+q.options[correct];
+      div.appendChild(info);
+    }
+  });
+
   const box=document.getElementById('score-box');
   box.style.display='block';
-  box.textContent=`Votre score : ${score} / ${questions.length} ${score===questions.length?'🎉':score>=4?'👍':'💪'}`;
+  const pct=Math.round(score/questions.length*100);
+  box.textContent=`Votre score : ${score} / ${questions.length} (${pct}%) ${score===questions.length?'🎉 Parfait !':score>=4?'👍 Bien joué !':'💪 Continuez !'}`;
   document.getElementById('btn-validate').style.display='none';
   document.getElementById('btn-reset').style.display='block';
   box.scrollIntoView({behavior:'smooth'});
 });
 
-document.getElementById('btn-reset').addEventListener('click',()=>{
-  document.getElementById('score-box').style.display='none';
-  document.getElementById('btn-validate').style.display='block';
-  document.getElementById('btn-reset').style.display='none';
-  render();
-  window.scrollTo({top:0,behavior:'smooth'});
-});
+document.getElementById('btn-reset').addEventListener('click',render);
 
 render();
 </script>
