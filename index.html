@@ -7,122 +7,83 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
-h1{color:#2c5f8a;text-align:center;font-size:1.4em;margin-bottom:6px}
-.subtitle{text-align:center;color:#555;font-size:.9em;margin-bottom:20px}
-.question{background:#fff;border-radius:8px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
-.question p{font-weight:bold;margin-bottom:10px;font-size:.95em}
-label{display:block;padding:7px 10px;margin:4px 0;border-radius:5px;cursor:pointer;font-size:.9em;border:1px solid #ddd;transition:background .2s}
+h1{color:#2c5f8a;text-align:center;margin-bottom:8px;font-size:1.4em}
+p.sub{text-align:center;color:#555;margin-bottom:20px;font-size:.95em}
+.card{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.card p{font-weight:bold;margin-bottom:10px;line-height:1.4}
+label{display:block;padding:8px 10px;border-radius:6px;margin-bottom:6px;cursor:pointer;border:1px solid #ddd;transition:background .2s}
 label:hover{background:#e8f0fe}
 input[type=radio]{margin-right:8px}
 .correct{background:#d4edda!important;border-color:#28a745!important;color:#155724}
 .wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24}
-.answer-info{margin-top:8px;font-size:.85em;color:#2c5f8a;font-style:italic}
-#score-box{background:#2c5f8a;color:#fff;text-align:center;border-radius:8px;padding:16px;margin-bottom:16px;font-size:1.1em;font-weight:bold}
-.btn{display:block;width:100%;padding:13px;font-size:1em;border:none;border-radius:7px;cursor:pointer;margin-top:6px;font-weight:bold}
+.answer-note{margin-top:8px;font-size:.88em;color:#2c5f8a;font-weight:bold}
+#score-box{background:#2c5f8a;color:#fff;border-radius:10px;padding:16px;text-align:center;margin-bottom:16px;font-size:1.2em;font-weight:bold}
+button{display:block;width:100%;padding:13px;border:none;border-radius:8px;font-size:1em;cursor:pointer;margin-bottom:10px}
 #btn-validate{background:#2c5f8a;color:#fff}
 #btn-validate:hover{background:#1e4570}
 #btn-reset{background:#e07b00;color:#fff;display:none}
-#btn-reset:hover{background:#b85f00}
+#btn-reset:hover{background:#b86200}
 </style>
 </head>
 <body>
 <h1>🧠 Quiz Business English du jour</h1>
-<p class="subtitle">Thème : Meetings &amp; Discussions — 6 questions</p>
+<p class="sub">Thème : Email &amp; Communication Essentials — 6 questions</p>
 <div id="score-box" style="display:none"></div>
 <div id="quiz"></div>
-<button class="btn" id="btn-validate">Valider mes réponses</button>
-<button class="btn" id="btn-reset">Recommencer</button>
-
+<button id="btn-validate" onclick="validate()">✅ Valider mes réponses</button>
+<button id="btn-reset" onclick="reset()">🔄 Recommencer</button>
 <script>
 const questions=[
-  {
-    q:'Que signifie <em>"to circle back"</em> ?',
-    options:["Annuler définitivement un sujet","Revenir sur un sujet plus tard","Recueillir les opinions de chacun","Dépasser l\'heure prévue"],
-    answer:1
-  },
-  {
-    q:'Complétez la phrase : <em>"That\'s a great point — let\'s ________ that for now and revisit it later."</em>',
-    options:["drop","table","park","skip"],
-    answer:2
-  },
-  {
-    q:'Quelle expression signifie <em>« mettre en pause, noter pour y revenir »</em> ?',
-    options:["To run overtime","To loop back","To put a pin in that","To postpone a meeting"],
-    answer:2
-  },
-  {
-    q:'Vrai ou faux : En anglais américain, <strong>"to table something"</strong> signifie aborder un sujet immédiatement.',
-    options:["Vrai","Faux — cela signifie reporter ou mettre de côté","Vrai, et c\'est pareil en anglais britannique","Faux — cela signifie annuler définitivement"],
-    answer:1
-  },
-  {
-    q:'Quelle expression signifie <em>« faire un effort supplémentaire »</em> ?',
-    options:["All hands on deck","To walk the talk","To go the extra mile","To put off a meeting"],
-    answer:2
-  },
-  {
-    q:'Complétez : <em>"The deadline moved up — it\'s ________ ________ on deck until Friday."</em>',
-    options:["every hand","all hands","full team","all people"],
-    answer:1
-  }
+  {q:'Que signifie <em>"I\'m all ears"</em> ?',opts:["Je suis trop occupé pour écouter","Je suis prêt et j'écoute attentivement","J'ai déjà entendu cela avant","Je n'entends pas bien"],ans:1},
+  {q:'Complétez : "_________ our conversation last Tuesday, here is the updated media plan."',opts:["Looking back on","Checking in on","Following up on","Catching up on"],ans:2},
+  {q:'Quelle expression signifie <em>"envoyer un message rapide"</em> ?',opts:["To sync up","To give someone a shout","To be on the same page","To drop someone a line"],ans:3},
+  {q:'Que signifie <em>"Let\'s call it a day"</em> ?',opts:["Planifions une réunion demain","Concentrons-nous sur aujourd\'hui","Arrêtons de travailler pour aujourd\'hui","Appelons-nous dans la journée"],ans:2},
+  {q:'Complétez : "Can we ________ ________ for 20 minutes before the board meeting?"',opts:["catch / up","line / up","hook / up","sync / up"],ans:3},
+  {q:'Quelle expression utiliseriez-vous pour dire à un collègue que vous partez rapidement d\'une réunion ?',opts:["Let\'s call it a day","Just checking","Gotta bounce","Thanks for the heads-up"],ans:2}
 ];
 
-const correctAnswers=questions.map(q=>q.answer);
-
 function render(){
-  const quiz=document.getElementById('quiz');
-  quiz.innerHTML='';
+  const div=document.getElementById('quiz');
+  div.innerHTML='';
   questions.forEach((q,i)=>{
-    const div=document.createElement('div');
-    div.className='question';
-    div.innerHTML=`<p>Question ${i+1} : ${q.q}</p>`+
-      q.options.map((opt,j)=>`<label id="lbl-${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${opt}</label>`).join('');
-    quiz.appendChild(div);
+    let opts=q.opts.map((o,j)=>`<label id="lbl-${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join('');
+    div.innerHTML+=`<div class="card" id="card-${i}"><p>Q${i+1}. ${q.q}</p>${opts}<div class="answer-note" id="note-${i}" style="display:none"></div></div>`;
   });
-  document.getElementById('score-box').style.display='none';
-  document.getElementById('btn-validate').style.display='block';
-  document.getElementById('btn-reset').style.display='none';
 }
 
-document.getElementById('btn-validate').addEventListener('click',()=>{
+function validate(){
   let score=0;
   let allAnswered=true;
-  const results=questions.map((q,i)=>{
-    const sel=document.querySelector(`input[name="q${i}"]:checked`);
-    if(!sel){allAnswered=false;return null;}
-    return parseInt(sel.value);
-  });
-  if(!allAnswered){alert('Veuillez répondre à toutes les questions.');return;}
-  
   questions.forEach((q,i)=>{
-    const chosen=results[i];
-    const correct=correctAnswers[i];
-    q.options.forEach((_,j)=>{
+    const sel=document.querySelector(`input[name="q${i}"]:checked`);
+    if(!sel){allAnswered=false;return;}
+    const chosen=parseInt(sel.value);
+    const note=document.getElementById(`note-${i}`);
+    q.opts.forEach((_,j)=>{
       const lbl=document.getElementById(`lbl-${i}-${j}`);
-      lbl.querySelector('input').disabled=true;
-      if(j===correct){lbl.className='correct';}
-      else if(j===chosen&&chosen!==correct){lbl.className='wrong';}
+      lbl.style.pointerEvents='none';
+      if(j===q.ans) lbl.classList.add('correct');
+      if(j===chosen && chosen!==q.ans) lbl.classList.add('wrong');
     });
-    if(chosen===correct)score++;
-    if(chosen!==correct){
-      const div=document.querySelectorAll('.question')[i];
-      const info=document.createElement('div');
-      info.className='answer-info';
-      info.textContent='✅ Bonne réponse : '+q.options[correct];
-      div.appendChild(info);
-    }
+    note.style.display='block';
+    if(chosen===q.ans){score++;note.innerHTML='✅ Bonne réponse !';}
+    else{note.innerHTML=`❌ Mauvaise réponse. La bonne réponse était : <strong>${q.opts[q.ans]}</strong>`;}
   });
-
+  if(!allAnswered){alert('Veuillez répondre à toutes les questions avant de valider.');return;}
   const box=document.getElementById('score-box');
   box.style.display='block';
-  const pct=Math.round(score/questions.length*100);
-  box.textContent=`Votre score : ${score} / ${questions.length} (${pct}%) ${score===questions.length?'🎉 Parfait !':score>=4?'👍 Bien joué !':'💪 Continuez !'}`;
+  box.innerHTML=`🎯 Votre score : ${score} / ${questions.length} ${score===questions.length?'— Parfait ! 🏆':score>=4?'— Très bien ! 👍':'— Continuez à pratiquer ! 💪'}`;
   document.getElementById('btn-validate').style.display='none';
   document.getElementById('btn-reset').style.display='block';
   box.scrollIntoView({behavior:'smooth'});
-});
+}
 
-document.getElementById('btn-reset').addEventListener('click',render);
+function reset(){
+  document.getElementById('score-box').style.display='none';
+  document.getElementById('btn-validate').style.display='block';
+  document.getElementById('btn-reset').style.display='none';
+  render();
+}
 
 render();
 </script>
