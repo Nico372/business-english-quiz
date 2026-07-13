@@ -7,18 +7,19 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
-h1{color:#2c5f8a;text-align:center;margin-bottom:8px;font-size:1.4em}
-p.sub{text-align:center;color:#555;margin-bottom:20px;font-size:.95em}
-.card{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
-.card p{font-weight:bold;margin-bottom:10px;line-height:1.4}
-label{display:block;padding:8px 10px;border-radius:6px;margin-bottom:6px;cursor:pointer;border:1px solid #ddd;transition:background .2s}
-label:hover{background:#e8f0fe}
+h1{color:#2c5f8a;text-align:center;font-size:1.4em;margin-bottom:6px}
+.subtitle{text-align:center;color:#555;font-size:.9em;margin-bottom:20px}
+.card{background:#fff;border-radius:10px;padding:16px;margin-bottom:16px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.q-num{font-weight:bold;color:#2c5f8a;margin-bottom:8px;font-size:.95em}
+.q-text{margin-bottom:10px;line-height:1.5}
+label{display:block;padding:8px 10px;border-radius:6px;cursor:pointer;margin-bottom:6px;border:1px solid #ddd;transition:background .2s}
+label:hover{background:#eef3fa}
 input[type=radio]{margin-right:8px}
 .correct{background:#d4edda!important;border-color:#28a745!important;color:#155724}
 .wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24}
-.answer-note{margin-top:8px;font-size:.88em;color:#2c5f8a;font-weight:bold}
-#score-box{background:#2c5f8a;color:#fff;border-radius:10px;padding:16px;text-align:center;margin-bottom:16px;font-size:1.2em;font-weight:bold}
-button{display:block;width:100%;padding:13px;border:none;border-radius:8px;font-size:1em;cursor:pointer;margin-bottom:10px}
+.answer-info{margin-top:8px;font-size:.85em;color:#2c5f8a;font-style:italic}
+#score-box{background:#2c5f8a;color:#fff;border-radius:10px;padding:16px;text-align:center;margin-bottom:16px;font-size:1.1em;font-weight:bold;display:none}
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:8px;font-size:1em;cursor:pointer;font-weight:bold;margin-bottom:10px}
 #btn-validate{background:#2c5f8a;color:#fff}
 #btn-validate:hover{background:#1e4570}
 #btn-reset{background:#e07b00;color:#fff;display:none}
@@ -27,27 +28,74 @@ button{display:block;width:100%;padding:13px;border:none;border-radius:8px;font-
 </head>
 <body>
 <h1>🧠 Quiz Business English du jour</h1>
-<p class="sub">Thème : Email &amp; Communication Essentials — 6 questions</p>
-<div id="score-box" style="display:none"></div>
+<p class="subtitle">Publicité & Vocabulaire Client — Havas International</p>
+<div id="score-box"></div>
 <div id="quiz"></div>
-<button id="btn-validate" onclick="validate()">✅ Valider mes réponses</button>
-<button id="btn-reset" onclick="reset()">🔄 Recommencer</button>
+<button class="btn" id="btn-validate" onclick="validate()">Valider mes réponses</button>
+<button class="btn" id="btn-reset" onclick="reset()">🔄 Recommencer</button>
 <script>
 const questions=[
-  {q:'Que signifie <em>"I\'m all ears"</em> ?',opts:["Je suis trop occupé pour écouter","Je suis prêt et j'écoute attentivement","J'ai déjà entendu cela avant","Je n'entends pas bien"],ans:1},
-  {q:'Complétez : "_________ our conversation last Tuesday, here is the updated media plan."',opts:["Looking back on","Checking in on","Following up on","Catching up on"],ans:2},
-  {q:'Quelle expression signifie <em>"envoyer un message rapide"</em> ?',opts:["To sync up","To give someone a shout","To be on the same page","To drop someone a line"],ans:3},
-  {q:'Que signifie <em>"Let\'s call it a day"</em> ?',opts:["Planifions une réunion demain","Concentrons-nous sur aujourd\'hui","Arrêtons de travailler pour aujourd\'hui","Appelons-nous dans la journée"],ans:2},
-  {q:'Complétez : "Can we ________ ________ for 20 minutes before the board meeting?"',opts:["catch / up","line / up","hook / up","sync / up"],ans:3},
-  {q:'Quelle expression utiliseriez-vous pour dire à un collègue que vous partez rapidement d\'une réunion ?',opts:["Let\'s call it a day","Just checking","Gotta bounce","Thanks for the heads-up"],ans:2}
+  {
+    q:"Que signifie <strong>\"ATL\"</strong> ?",
+    opts:["Around the loop — contacter tout le monde","Above the line — communication de masse (TV, radio, presse)","At the limit — en limite de budget","After the launch — post-lancement"],
+    ans:1
+  },
+  {
+    q:"Complétez : <em>\"We need to map the full ________ ________ to understand where we're losing potential buyers.\"</em>",
+    opts:["media / mix","mood / board","customer / journey","reach / frequency"],
+    ans:2
+  },
+  {
+    q:"Qu'est-ce qu'un <strong>\"mood board\"</strong> ?",
+    opts:["Une liste d'actions issues d'une réunion","Un tableau de bord résumant les KPIs","Une planche visuelle pour aligner l'équipe sur une direction créative","Un document budgétaire client"],
+    ans:2
+  },
+  {
+    q:"Quelle expression signifie <em>\"faire un effort supplémentaire\"</em> ?",
+    opts:["All hands on deck","To walk the talk","To go the extra mile","To brief the team"],
+    ans:2
+  },
+  {
+    q:"Quelle est la différence entre <strong>reach</strong> et <strong>frequency</strong> ?",
+    opts:["Reach = combien de fois une pub est vue ; Frequency = combien de personnes la voient","Reach = combien de personnes voient une pub ; Frequency = combien de fois elles la voient","Ce sont des synonymes en média planning","Reach = budget ; Frequency = durée de campagne"],
+    ans:1
+  },
+  {
+    q:"Complétez : <em>\"Our campaign is fully ________ — the message is consistent on Instagram, in-store, and on TV.\"</em>",
+    opts:["ATL","BTL","omnichannel","programmatic"],
+    ans:2
+  },
+  {
+    q:"Que signifie <strong>\"to walk the talk\"</strong> ?",
+    opts:["Expliquer clairement sa stratégie en présentation","Faire réellement ce que l'on dit","Accompagner un client étape par étape","Dépasser les objectifs fixés"],
+    ans:1
+  },
+  {
+    q:"Que sont les <strong>\"cutdowns\"</strong> ?",
+    opts:["Des réductions budgétaires en cours de campagne","Des versions courtes d'un film long, adaptées au digital","Des indicateurs de performance clés","Des formats OOH réduits"],
+    ans:1
+  },
+  {
+    q:"<strong>\"All hands on deck\"</strong> signifie que seule l'équipe senior doit s'impliquer. Vrai ou Faux ?",
+    opts:["Vrai","Faux","Cela dépend du contexte","Seulement pour les pitches clients"],
+    ans:1
+  },
+  {
+    q:"À quoi fait référence le <strong>\"media mix\"</strong> ?",
+    opts:["Le ratio créa/copy dans une annonce","Le budget publicitaire total du client","La combinaison de différents canaux médias utilisés dans une campagne","La fréquence d'exposition cible"],
+    ans:2
+  }
 ];
 
 function render(){
-  const div=document.getElementById('quiz');
-  div.innerHTML='';
+  const d=document.getElementById('quiz');
+  d.innerHTML='';
   questions.forEach((q,i)=>{
-    let opts=q.opts.map((o,j)=>`<label id="lbl-${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join('');
-    div.innerHTML+=`<div class="card" id="card-${i}"><p>Q${i+1}. ${q.q}</p>${opts}<div class="answer-note" id="note-${i}" style="display:none"></div></div>`;
+    const card=document.createElement('div');
+    card.className='card';
+    card.innerHTML=`<div class="q-num">Question ${i+1} / ${questions.length}</div><div class="q-text">${q.q}</div>`+
+      q.opts.map((o,j)=>`<label id="lbl_${i}_${j}"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join('');
+    d.appendChild(card);
   });
 }
 
@@ -58,24 +106,31 @@ function validate(){
     const sel=document.querySelector(`input[name="q${i}"]:checked`);
     if(!sel){allAnswered=false;return;}
     const chosen=parseInt(sel.value);
-    const note=document.getElementById(`note-${i}`);
     q.opts.forEach((_,j)=>{
-      const lbl=document.getElementById(`lbl-${i}-${j}`);
+      const lbl=document.getElementById(`lbl_${i}_${j}`);
       lbl.style.pointerEvents='none';
-      if(j===q.ans) lbl.classList.add('correct');
-      if(j===chosen && chosen!==q.ans) lbl.classList.add('wrong');
+      if(j===q.ans){lbl.classList.add('correct');}
+      else if(j===chosen&&chosen!==q.ans){lbl.classList.add('wrong');}
     });
-    note.style.display='block';
-    if(chosen===q.ans){score++;note.innerHTML='✅ Bonne réponse !';}
-    else{note.innerHTML=`❌ Mauvaise réponse. La bonne réponse était : <strong>${q.opts[q.ans]}</strong>`;}
+    if(chosen===q.ans)score++;
+    // add answer info
+    if(chosen!==q.ans){
+      const card=document.getElementById(`lbl_${i}_0`).parentElement;
+      const info=document.createElement('div');
+      info.className='answer-info';
+      info.innerHTML=`✅ Bonne réponse : <strong>${q.opts[q.ans]}</strong>`;
+      card.appendChild(info);
+    }
   });
-  if(!allAnswered){alert('Veuillez répondre à toutes les questions avant de valider.');return;}
+  if(!allAnswered){alert('Merci de répondre à toutes les questions avant de valider.');return;}
   const box=document.getElementById('score-box');
   box.style.display='block';
-  box.innerHTML=`🎯 Votre score : ${score} / ${questions.length} ${score===questions.length?'— Parfait ! 🏆':score>=4?'— Très bien ! 👍':'— Continuez à pratiquer ! 💪'}`;
+  const pct=Math.round(score/questions.length*100);
+  let emoji=pct>=80?'🎉':pct>=50?'👍':'💪';
+  box.innerHTML=`${emoji} Votre score : <span style="font-size:1.4em">${score}/${questions.length}</span> (${pct}%)`;
   document.getElementById('btn-validate').style.display='none';
   document.getElementById('btn-reset').style.display='block';
-  box.scrollIntoView({behavior:'smooth'});
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function reset(){
@@ -83,6 +138,7 @@ function reset(){
   document.getElementById('btn-validate').style.display='block';
   document.getElementById('btn-reset').style.display='none';
   render();
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 render();
