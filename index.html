@@ -7,62 +7,62 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
-h1{color:#2c5f8a;font-size:1.4em;text-align:center;margin-bottom:6px}
-p.subtitle{text-align:center;color:#555;font-size:.9em;margin-bottom:20px}
-.card{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
-.question{font-weight:bold;margin-bottom:10px;font-size:.95em}
-label{display:block;padding:8px 10px;margin:4px 0;border-radius:6px;cursor:pointer;border:1px solid #ddd;font-size:.9em;transition:background .2s}
-label:hover{background:#e8f0fe}
+h1{color:#2c5f8a;text-align:center;margin-bottom:6px;font-size:1.4em}
+p.subtitle{text-align:center;color:#555;margin-bottom:20px;font-size:.95em}
+.question{background:#fff;border-radius:8px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.question p{font-weight:bold;margin-bottom:10px;line-height:1.4}
+label{display:block;padding:7px 10px;border-radius:5px;cursor:pointer;margin-bottom:5px;border:1px solid #ddd;transition:background .2s}
+label:hover{background:#eef4fb}
 input[type=radio]{margin-right:8px}
 .correct{background:#d4edda!important;border-color:#28a745!important;color:#155724}
 .wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24}
-.show-answer{font-size:.85em;margin-top:6px;color:#2c5f8a;font-style:italic}
-#score-box{background:#2c5f8a;color:#fff;text-align:center;padding:16px;border-radius:10px;margin-bottom:16px;font-size:1.2em;font-weight:bold}
-button{display:block;width:100%;padding:13px;border:none;border-radius:8px;font-size:1em;cursor:pointer;font-weight:bold;margin-top:6px}
+.answer-info{margin-top:8px;font-size:.88em;color:#2c5f8a;font-style:italic}
+#score-box{background:#2c5f8a;color:#fff;border-radius:8px;padding:16px;text-align:center;margin-bottom:16px;font-size:1.2em;font-weight:bold}
+button{display:block;width:100%;padding:13px;border:none;border-radius:8px;font-size:1em;cursor:pointer;margin-bottom:10px}
 #btn-validate{background:#2c5f8a;color:#fff}
 #btn-validate:hover{background:#1e4570}
-#btn-restart{background:#e07b00;color:#fff;margin-top:10px;display:none}
-#btn-restart:hover{background:#b85f00}
+#btn-reset{background:#e07b00;color:#fff;display:none}
+#btn-reset:hover{background:#b85f00}
 </style>
 </head>
 <body>
-<h1>🧠 Quiz Business English du jour</h1>
-<p class="subtitle">Négociation, décisions &amp; approbations — 6 questions</p>
+<h1>📝 Quiz Business English du jour</h1>
+<p class="subtitle">Thème : Décisions &amp; Négociations — 6 questions sur 10 expressions</p>
 <div id="score-box" style="display:none"></div>
 <div id="quiz"></div>
 <button id="btn-validate">Valider mes réponses</button>
-<button id="btn-restart">🔄 Recommencer</button>
+<button id="btn-reset">🔄 Recommencer</button>
 <script>
 const questions=[
   {
-    q:'Que signifie <em>"to get buy-in"</em> ?',
-    opts:["Acheter une part dans une entreprise","Obtenir l'adhésion et le soutien de personnes clés","Signer un contrat avec un nouveau client","Donner le feu vert à un projet"],
-    ans:1
+    q:'Que signifie <em>"to call the shots"</em> ?',
+    options:['Passer un appel téléphonique à un client','Prendre les décisions clés','Présenter un nouveau concept de campagne','Envoyer un rapport hebdomadaire'],
+    answer:1
   },
   {
-    q:'Complétez la phrase : <em>"Before the pitch, let\'s make sure we\'re all ________ on the key messages."</em>',
-    opts:["on the back burner","off the charts","on the same page","up to speed"],
-    ans:2
+    q:'Quelle expression signifie <strong>« voué à l\'échec / impossible dès le départ »</strong> ?',
+    options:['Deal-breaker','We\'re good to go','Non-starter','Set in stone'],
+    answer:2
   },
   {
-    q:'Quelle expression signifie <em>« soumettre une idée pour validation »</em> ?',
-    opts:["To push back","To sign off on something","To meet halfway","To run something by someone"],
-    ans:3
+    q:'Complétez la phrase : <em>"Legal has approved, the client has signed off — we\'re ________ for launch!"</em>',
+    options:['behind schedule','set in stone','good to go','rubber-stamping it'],
+    answer:2
   },
   {
-    q:'Que signifie <em>"to push back"</em> ?',
-    opts:["Approuver avec enthousiasme une proposition","Résister ou contester une proposition","Repousser une réunion à plus tard","Donner un retour positif au client"],
-    ans:1
+    q:'Que signifie <em>"to rubber-stamp"</em> ?',
+    options:['Refuser une proposition','Approuver formellement sans vraiment examiner','Négocier âprement un contrat','Faire une révision détaillée'],
+    answer:1
   },
   {
-    q:'Quelle expression signifie <em>« être débordé / surchargé »</em> ?',
-    opts:["To be on the same page / to be aligned","To fast-track / to streamline","To be swamped / to be slammed","To sign off / to give the green light"],
-    ans:2
+    q:'Quelle expression signifie <strong>« ne rien laisser au hasard »</strong> ?',
+    options:['To go the extra mile','To have skin in the game','To buy into something','Cross every T and dot every I'],
+    answer:3
   },
   {
-    q:'Que signifie <em>"drinking from a firehose"</em> ?',
-    opts:["Travailler sous forte pression physique","Être submergé d'informations difficiles à absorber","Gérer plusieurs clients en même temps","Donner trop d'informations au client"],
-    ans:1
+    q:'Que signifie <em>"to buy into something"</em> ?',
+    options:['Acheter des espaces médias','Investir de l\'argent dans un projet','Adhérer et croire sincèrement à une idée','Signer un contrat en urgence'],
+    answer:2
   }
 ];
 
@@ -70,15 +70,13 @@ function render(){
   const quiz=document.getElementById('quiz');
   quiz.innerHTML='';
   questions.forEach((q,i)=>{
-    const card=document.createElement('div');
-    card.className='card';
-    card.innerHTML=`<div class="question">Q${i+1}. ${q.q}</div>`+
-      q.opts.map((o,j)=>`<label id="lbl-${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join('');
-    quiz.appendChild(card);
+    const div=document.createElement('div');
+    div.className='question';
+    div.innerHTML=`<p>Question ${i+1} — ${q.q}</p>`+
+      q.options.map((opt,j)=>`<label id="lbl-${i}-${j}"><input type="radio" name="q${i}" value="${j}"> ${opt}</label>`).join('')+
+      `<div class="answer-info" id="info-${i}" style="display:none"></div>`;
+    quiz.appendChild(div);
   });
-  document.getElementById('score-box').style.display='none';
-  document.getElementById('btn-restart').style.display='none';
-  document.getElementById('btn-validate').style.display='block';
 }
 
 document.getElementById('btn-validate').addEventListener('click',()=>{
@@ -88,32 +86,38 @@ document.getElementById('btn-validate').addEventListener('click',()=>{
     const sel=document.querySelector(`input[name="q${i}"]:checked`);
     if(!sel){allAnswered=false;return;}
     const chosen=parseInt(sel.value);
-    q.opts.forEach((_,j)=>{
+    q.options.forEach((_,j)=>{
       const lbl=document.getElementById(`lbl-${i}-${j}`);
       lbl.style.pointerEvents='none';
-      if(j===q.ans){lbl.className='correct';}
-      else if(j===chosen&&chosen!==q.ans){lbl.className='wrong';}
+      if(j===q.answer) lbl.classList.add('correct');
+      else if(j===chosen && chosen!==q.answer) lbl.classList.add('wrong');
     });
-    if(chosen===q.ans){score++;}
-    else{
-      const card=document.querySelectorAll('.card')[i];
-      let hint=card.querySelector('.show-answer');
-      if(!hint){hint=document.createElement('div');hint.className='show-answer';card.appendChild(hint);}
-      hint.textContent='✅ Bonne réponse : '+q.opts[q.ans];
+    const info=document.getElementById(`info-${i}`);
+    info.style.display='block';
+    if(chosen===q.answer){
+      score++;
+      info.textContent='✅ Bonne réponse !';
+    } else {
+      info.textContent=`❌ Mauvaise réponse. La bonne réponse était : "${q.options[q.answer]}"`;
     }
   });
-  if(!allAnswered){alert('Merci de répondre à toutes les questions avant de valider.');return;}
+  if(!allAnswered){alert('Veuillez répondre à toutes les questions avant de valider.');return;}
   const box=document.getElementById('score-box');
   box.style.display='block';
-  const pct=Math.round(score/questions.length*100);
-  const emoji=score===questions.length?'🏆':score>=4?'👍':score>=2?'😊':'💪';
-  box.textContent=`${emoji} Votre score : ${score} / ${questions.length} (${pct}%)`;
+  box.textContent=`Votre score : ${score} / ${questions.length} ${score===questions.length?'🎉 Parfait !':score>=4?'👍 Bien joué !':'💪 Continuez à réviser !'}`;
   document.getElementById('btn-validate').style.display='none';
-  document.getElementById('btn-restart').style.display='block';
+  document.getElementById('btn-reset').style.display='block';
   box.scrollIntoView({behavior:'smooth'});
 });
 
-document.getElementById('btn-restart').addEventListener('click',render);
+document.getElementById('btn-reset').addEventListener('click',()=>{
+  document.getElementById('score-box').style.display='none';
+  document.getElementById('btn-validate').style.display='block';
+  document.getElementById('btn-reset').style.display='none';
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
 render();
 </script>
 </body>
