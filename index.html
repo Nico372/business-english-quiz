@@ -7,83 +7,132 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
-h1{color:#2c5f8a;font-size:1.4em;text-align:center;margin-bottom:6px}
+h1{color:#2c5f8a;text-align:center;font-size:1.4em;margin-bottom:6px}
 p.subtitle{text-align:center;color:#555;font-size:.9em;margin-bottom:20px}
-.question{background:#fff;border-radius:8px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
-.question p{font-weight:bold;margin-bottom:10px;font-size:.95em}
-label{display:block;padding:7px 10px;margin-bottom:5px;border-radius:5px;cursor:pointer;border:1px solid #ddd;font-size:.9em;transition:background .2s}
-label:hover{background:#eef3fb}
-input[type=radio]{margin-right:8px}
-.correct{background:#d4edda!important;border-color:#28a745!important;color:#155724}
+.card{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.q-num{font-weight:bold;color:#2c5f8a;margin-bottom:8px;font-size:.95em}
+.q-text{margin-bottom:10px;line-height:1.5}
+label{display:flex;align-items:flex-start;gap:8px;padding:7px 10px;border-radius:6px;cursor:pointer;border:1px solid #ddd;margin-bottom:6px;font-size:.92em;transition:background .2s}
+label:hover{background:#eef4fb}
+input[type=radio]{margin-top:3px;flex-shrink:0}
+.correct{background:#d4edda!important;border-color:#28a745!important;color:#155724;font-weight:bold}
 .wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24}
-.answer-info{margin-top:8px;font-size:.85em;color:#2c5f8a;font-style:italic}
-#score-box{background:#2c5f8a;color:#fff;border-radius:8px;padding:16px;text-align:center;font-size:1.2em;font-weight:bold;margin-bottom:16px;display:none}
-.btn{display:block;width:100%;max-width:320px;margin:16px auto 0;padding:12px;border:none;border-radius:6px;font-size:1em;cursor:pointer;font-weight:bold}
+.answer-note{font-size:.85em;color:#155724;margin-top:6px;padding:6px 10px;background:#d4edda;border-radius:5px}
+#score-box{text-align:center;padding:16px;background:#2c5f8a;color:#fff;border-radius:10px;margin-bottom:16px;font-size:1.2em;font-weight:bold}
+.btn{display:block;width:100%;padding:13px;font-size:1em;border:none;border-radius:8px;cursor:pointer;font-weight:bold;margin-bottom:10px}
 #btn-validate{background:#2c5f8a;color:#fff}
-#btn-restart{background:#e07b00;color:#fff;display:none}
+#btn-validate:hover{background:#1e4570}
+#btn-reset{background:#e07b00;color:#fff;display:none}
+#btn-reset:hover{background:#b85e00}
+em{color:#555}
 </style>
 </head>
 <body>
-<h1>📝 Quiz Business English du jour</h1>
-<p class="subtitle">Stratégie &amp; Performance — 6 questions, 10 expressions</p>
-<div id="score-box"></div>
+<h1>📊 Quiz Business English du jour</h1>
+<p class="subtitle">Numbers, Data &amp; Strategic Thinking — 6 questions</p>
+<div id="score-box" style="display:none"></div>
 <div id="quiz"></div>
-<button class="btn" id="btn-validate" onclick="validate()">Valider mes réponses</button>
-<button class="btn" id="btn-restart" onclick="restart()">Recommencer</button>
+<button class="btn" id="btn-validate">Valider mes réponses</button>
+<button class="btn" id="btn-reset">Recommencer</button>
 <script>
 const questions=[
-  {q:'Que signifie <em>"to scale"</em> dans un contexte business ?',options:['Réduire l\'ambition d\'un projet','Déployer quelque chose à plus grande échelle','Mesurer la performance d\'une campagne','Présenter un bilan financier'],answer:1},
-  {q:'Complétez : "Il y a trop de rapports qui circulent — nous avons besoin d\'un ________ pour que tout le monde travaille avec les mêmes données."',options:['sweet spot','competitive edge','single source of truth','secret sauce'],answer:2},
-  {q:'Quelle expression signifie <em>"se démarquer du bruit"</em> ?',options:['To future-proof','To get buy-in','To scale','To cut through the clutter'],answer:3},
-  {q:'Que signifie <em>"secret sauce"</em> ?',options:['Une recette confidentielle d\'un client','Une idée créative de dernière minute','La combinaison unique de facteurs qui explique le succès','Un avantage technologique exclusif'],answer:2},
-  {q:'Quelle expression signifie <em>"zone optimale"</em> ?',options:['End-to-end','Competitive edge','Sweet spot','Single source of truth'],answer:2},
-  {q:'Que signifie <em>"to future-proof"</em> ?',options:['Prédire les revenus de l\'année suivante','S\'assurer que quelque chose reste pertinent et efficace dans le futur','Retarder une décision stratégique','Obtenir l\'adhésion des équipes'],answer:1}
+  {
+    q:"Que signifie <strong>\"to crunch the numbers\"</strong> ?",
+    opts:["Ignorer les données financières","Analyser les chiffres en détail","Arrondir les chiffres pour simplifier","Présenter un rapport chiffré au client"],
+    ans:1
+  },
+  {
+    q:"Quelle expression signifie <em>\"lire entre les lignes\"</em> ?",
+    opts:["To connect the dots","To get to the bottom of","To read between the lines","To double click on"],
+    ans:2
+  },
+  {
+    q:"Complétez la phrase : <em>\"The pitch is in two weeks — let's ________ on the strategy deck before we think about the creative.\"</em>",
+    opts:["scratch the surface","get our ducks in a row","crunch the numbers","pick the low-hanging fruit"],
+    ans:1
+  },
+  {
+    q:"Que signifie <strong>\"to double click on\"</strong> dans un contexte business ?",
+    opts:["Envoyer un email de relance","Répéter deux fois le même argument","Approfondir un sujet spécifique","Valider une décision en réunion"],
+    ans:2
+  },
+  {
+    q:"Quelle expression signifie <em>\"prioriser les tâches simples / aller chercher les gains faciles\"</em> ?",
+    opts:["To get to the bottom of","To pick the low-hanging fruit","To connect the dots","Data-driven"],
+    ans:1
+  },
+  {
+    q:"Que signifie <strong>\"to scratch the surface\"</strong> ?",
+    opts:["Analyser un sujet en profondeur","Effleurer le sujet, traiter superficiellement","Identifier les causes profondes d'un problème","Faire le lien entre différentes informations"],
+    ans:1
+  }
 ];
 
+const quizDiv=document.getElementById("quiz");
+const btnValidate=document.getElementById("btn-validate");
+const btnReset=document.getElementById("btn-reset");
+const scoreBox=document.getElementById("score-box");
+
 function render(){
-  const div=document.getElementById('quiz');
-  div.innerHTML='';
+  quizDiv.innerHTML="";
   questions.forEach((q,i)=>{
-    let opts=q.options.map((o,j)=>`<label id="lbl_${i}_${j}"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join('');
-    div.innerHTML+=`<div class="question" id="qblock_${i}"><p>${i+1}. ${q.q}</p>${opts}<div class="answer-info" id="info_${i}" style="display:none"></div></div>`;
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`<div class="q-num">Question ${i+1} / ${questions.length}</div><div class="q-text">${q.q}</div>`;
+    q.opts.forEach((opt,j)=>{
+      const lbl=document.createElement("label");
+      lbl.setAttribute("data-idx",j);
+      lbl.innerHTML=`<input type="radio" name="q${i}" value="${j}"> ${opt}`;
+      card.appendChild(lbl);
+    });
+    quizDiv.appendChild(card);
   });
 }
 
-function validate(){
+btnValidate.addEventListener("click",()=>{
   let score=0;
+  const cards=quizDiv.querySelectorAll(".card");
   let allAnswered=true;
   questions.forEach((q,i)=>{
     const sel=document.querySelector(`input[name="q${i}"]:checked`);
-    if(!sel){allAnswered=false;return;}
-    const val=parseInt(sel.value);
-    const info=document.getElementById(`info_${i}`);
-    for(let j=0;j<q.options.length;j++){
-      const lbl=document.getElementById(`lbl_${i}_${j}`);
-      lbl.style.pointerEvents='none';
-      if(j===q.answer) lbl.className='correct';
-      else if(j===val && val!==q.answer) lbl.className='wrong';
-    }
-    if(val===q.answer){score++;}
-    else{info.style.display='block';info.innerHTML='✅ Bonne réponse : '+q.options[q.answer];}
+    if(!sel){allAnswered=false;}
   });
-  if(!allAnswered){alert('Veuillez répondre à toutes les questions.');return;}
-  const box=document.getElementById('score-box');
-  box.style.display='block';
-  const pct=Math.round(score/questions.length*100);
-  let msg=pct===100?'🎯 Parfait !':pct>=66?'👍 Bien joué !':'💪 Continuez !';
-  box.innerHTML=`Score : ${score}/${questions.length} — ${pct}% ${msg}`;
-  document.getElementById('btn-validate').style.display='none';
-  document.getElementById('btn-restart').style.display='block';
-  box.scrollIntoView({behavior:'smooth'});
-}
+  if(!allAnswered){alert("Merci de répondre à toutes les questions avant de valider.");return;}
+  questions.forEach((q,i)=>{
+    const card=cards[i];
+    const sel=document.querySelector(`input[name="q${i}"]:checked`);
+    const chosen=parseInt(sel.value);
+    const labels=card.querySelectorAll("label");
+    labels.forEach(lbl=>{
+      const inputs=lbl.querySelector("input");
+      inputs.disabled=true;
+      const v=parseInt(lbl.getAttribute("data-idx"));
+      if(v===q.ans){lbl.classList.add("correct");}
+      else if(v===chosen&&chosen!==q.ans){lbl.classList.add("wrong");}
+    });
+    if(chosen===q.ans){
+      score++;
+    } else {
+      const note=document.createElement("div");
+      note.className="answer-note";
+      note.innerHTML="✅ Bonne réponse : <strong>"+q.opts[q.ans]+"</strong>";
+      card.appendChild(note);
+    }
+  });
+  scoreBox.style.display="block";
+  scoreBox.textContent=`Votre score : ${score} / ${questions.length} 🎯`;
+  btnValidate.style.display="none";
+  btnReset.style.display="block";
+  scoreBox.scrollIntoView({behavior:"smooth"});
+});
 
-function restart(){
-  document.getElementById('score-box').style.display='none';
-  document.getElementById('btn-validate').style.display='block';
-  document.getElementById('btn-restart').style.display='none';
+btnReset.addEventListener("click",()=>{
+  scoreBox.style.display="none";
+  btnValidate.style.display="block";
+  btnReset.style.display="none";
   render();
-  window.scrollTo({top:0,behavior:'smooth'});
-}
+  window.scrollTo({top:0,behavior:"smooth"});
+});
 
 render();
 </script>
