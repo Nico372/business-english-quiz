@@ -7,132 +7,152 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f0f4f8;color:#222;padding:16px}
-h1{color:#2c5f8a;text-align:center;font-size:1.4em;margin-bottom:6px}
-p.subtitle{text-align:center;color:#555;font-size:.9em;margin-bottom:20px}
-.card{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
-.q-num{font-weight:bold;color:#2c5f8a;margin-bottom:8px;font-size:.95em}
-.q-text{margin-bottom:10px;line-height:1.5}
-label{display:flex;align-items:flex-start;gap:8px;padding:7px 10px;border-radius:6px;cursor:pointer;border:1px solid #ddd;margin-bottom:6px;font-size:.92em;transition:background .2s}
-label:hover{background:#eef4fb}
-input[type=radio]{margin-top:3px;flex-shrink:0}
-.correct{background:#d4edda!important;border-color:#28a745!important;color:#155724;font-weight:bold}
-.wrong{background:#f8d7da!important;border-color:#dc3545!important;color:#721c24}
-.answer-note{font-size:.85em;color:#155724;margin-top:6px;padding:6px 10px;background:#d4edda;border-radius:5px}
-#score-box{text-align:center;padding:16px;background:#2c5f8a;color:#fff;border-radius:10px;margin-bottom:16px;font-size:1.2em;font-weight:bold}
-.btn{display:block;width:100%;padding:13px;font-size:1em;border:none;border-radius:8px;cursor:pointer;font-weight:bold;margin-bottom:10px}
+h1{color:#2c5f8a;text-align:center;margin-bottom:8px;font-size:1.4em}
+p.subtitle{text-align:center;color:#555;margin-bottom:20px;font-size:.95em}
+.question{background:#fff;border-radius:8px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.question p{font-weight:bold;margin-bottom:10px;line-height:1.4}
+label{display:block;padding:7px 10px;border-radius:5px;cursor:pointer;margin-bottom:5px;border:1px solid #ddd;transition:background .2s}
+label:hover{background:#e8f0fe}
+input[type=radio]{margin-right:8px}
+.correct{background:#d4edda;border-color:#28a745;color:#155724}
+.wrong{background:#f8d7da;border-color:#dc3545;color:#721c24}
+.answer-info{margin-top:8px;font-size:.88em;color:#2c5f8a;font-style:italic}
+#score-box{background:#2c5f8a;color:#fff;border-radius:8px;padding:16px;text-align:center;margin-bottom:16px;font-size:1.2em;font-weight:bold}
+button{display:block;width:100%;padding:13px;border:none;border-radius:8px;font-size:1em;cursor:pointer;margin-top:6px}
 #btn-validate{background:#2c5f8a;color:#fff}
 #btn-validate:hover{background:#1e4570}
 #btn-reset{background:#e07b00;color:#fff;display:none}
-#btn-reset:hover{background:#b85e00}
-em{color:#555}
+#btn-reset:hover{background:#b85f00}
 </style>
 </head>
 <body>
-<h1>📊 Quiz Business English du jour</h1>
-<p class="subtitle">Numbers, Data &amp; Strategic Thinking — 6 questions</p>
-<div id="score-box" style="display:none"></div>
+<h1>🧠 Quiz Business English du jour</h1>
+<p class="subtitle">Idioms &amp; Everyday Expressions — Havas International</p>
 <div id="quiz"></div>
-<button class="btn" id="btn-validate">Valider mes réponses</button>
-<button class="btn" id="btn-reset">Recommencer</button>
+<div id="score-box" style="display:none"></div>
+<button id="btn-validate">Valider mes réponses</button>
+<button id="btn-reset">Recommencer</button>
 <script>
 const questions=[
   {
-    q:"Que signifie <strong>\"to crunch the numbers\"</strong> ?",
-    opts:["Ignorer les données financières","Analyser les chiffres en détail","Arrondir les chiffres pour simplifier","Présenter un rapport chiffré au client"],
+    q:'Que signifie <em>"to streamline"</em> ?',
+    opts:['Ajouter des étapes à un processus','Simplifier et rendre plus efficace','Retarder une décision','Déléguer une tâche'],
     ans:1
   },
   {
-    q:"Quelle expression signifie <em>\"lire entre les lignes\"</em> ?",
-    opts:["To connect the dots","To get to the bottom of","To read between the lines","To double click on"],
+    q:'Complétez : "We can\'t let key deliverables ________ — let\'s assign a clear owner to each task."',
+    opts:['lean into','tap into','fall through the cracks','put out fires'],
     ans:2
   },
   {
-    q:"Complétez la phrase : <em>\"The pitch is in two weeks — let's ________ on the strategy deck before we think about the creative.\"</em>",
-    opts:["scratch the surface","get our ducks in a row","crunch the numbers","pick the low-hanging fruit"],
+    q:'Quelle expression signifie <em>pérenniser</em> ?',
+    opts:['To tap into','To go the extra mile','To put ideas on the table','To future-proof'],
+    ans:3
+  },
+  {
+    q:'Que signifie <em>"off the beaten path"</em> ?',
+    opts:['Suivre l\'approche la plus traditionnelle','Sortir des sentiers battus, être non-conventionnel','Gérer les urgences','Faire le gros du travail'],
     ans:1
   },
   {
-    q:"Que signifie <strong>\"to double click on\"</strong> dans un contexte business ?",
-    opts:["Envoyer un email de relance","Répéter deux fois le même argument","Approfondir un sujet spécifique","Valider une décision en réunion"],
+    q:'Que signifie <em>"to lean into"</em> dans un contexte professionnel ?',
+    opts:['Éviter un sujet difficile','Déléguer une tâche à un collègue','S\'appuyer sur quelque chose et l\'embrasser pleinement','Mesurer les performances'],
     ans:2
   },
   {
-    q:"Quelle expression signifie <em>\"prioriser les tâches simples / aller chercher les gains faciles\"</em> ?",
-    opts:["To get to the bottom of","To pick the low-hanging fruit","To connect the dots","Data-driven"],
+    q:'Quelle expression signifie <em>être submergé d\'informations</em> ?',
+    opts:['To go the extra mile','To put out fires','To do the heavy lifting','To be drinking from a firehose'],
+    ans:3
+  },
+  {
+    q:'Que signifie <em>"to tap into"</em> ?',
+    opts:['Ignorer une opportunité','Puiser dans une ressource ou un public','Annuler un projet','Escalader un problème'],
     ans:1
   },
   {
-    q:"Que signifie <strong>\"to scratch the surface\"</strong> ?",
-    opts:["Analyser un sujet en profondeur","Effleurer le sujet, traiter superficiellement","Identifier les causes profondes d'un problème","Faire le lien entre différentes informations"],
+    q:'Complétez : "Before we filter our ideas, let\'s spend time ________ — everything is welcome at this stage."',
+    opts:['streamlining','doing the heavy lifting','putting ideas on the table','future-proofing'],
+    ans:2
+  },
+  {
+    q:'Que signifie <em>"to do the heavy lifting"</em> ?',
+    opts:['Faire des heures supplémentaires le soir','Porter des charges lourdes pour un client','Prendre en charge la partie la plus exigeante du travail','Gérer les urgences de dernière minute'],
+    ans:2
+  },
+  {
+    q:'Que signifie <em>"to put out fires"</em> ?',
+    opts:['Annuler un projet','Gérer les problèmes urgents au fur et à mesure','Escalader un problème à la direction','Simplifier un processus'],
     ans:1
   }
 ];
 
-const quizDiv=document.getElementById("quiz");
-const btnValidate=document.getElementById("btn-validate");
-const btnReset=document.getElementById("btn-reset");
-const scoreBox=document.getElementById("score-box");
-
-function render(){
-  quizDiv.innerHTML="";
-  questions.forEach((q,i)=>{
-    const card=document.createElement("div");
-    card.className="card";
-    card.innerHTML=`<div class="q-num">Question ${i+1} / ${questions.length}</div><div class="q-text">${q.q}</div>`;
-    q.opts.forEach((opt,j)=>{
-      const lbl=document.createElement("label");
-      lbl.setAttribute("data-idx",j);
-      lbl.innerHTML=`<input type="radio" name="q${i}" value="${j}"> ${opt}`;
-      card.appendChild(lbl);
-    });
-    quizDiv.appendChild(card);
-  });
+// Pick 6 random questions
+function pickQuestions(){
+  const shuffled=[...questions].sort(()=>Math.random()-.5);
+  return shuffled.slice(0,6);
 }
 
-btnValidate.addEventListener("click",()=>{
-  let score=0;
-  const cards=quizDiv.querySelectorAll(".card");
-  let allAnswered=true;
-  questions.forEach((q,i)=>{
-    const sel=document.querySelector(`input[name="q${i}"]:checked`);
-    if(!sel){allAnswered=false;}
-  });
-  if(!allAnswered){alert("Merci de répondre à toutes les questions avant de valider.");return;}
-  questions.forEach((q,i)=>{
-    const card=cards[i];
-    const sel=document.querySelector(`input[name="q${i}"]:checked`);
-    const chosen=parseInt(sel.value);
-    const labels=card.querySelectorAll("label");
-    labels.forEach(lbl=>{
-      const inputs=lbl.querySelector("input");
-      inputs.disabled=true;
-      const v=parseInt(lbl.getAttribute("data-idx"));
-      if(v===q.ans){lbl.classList.add("correct");}
-      else if(v===chosen&&chosen!==q.ans){lbl.classList.add("wrong");}
+let selected=[];
+
+function render(){
+  selected=pickQuestions();
+  const quiz=document.getElementById('quiz');
+  quiz.innerHTML='';
+  selected.forEach((q,i)=>{
+    const div=document.createElement('div');
+    div.className='question';
+    div.id='q'+i;
+    let html=`<p>Question ${i+1} : ${q.q}</p>`;
+    q.opts.forEach((opt,j)=>{
+      html+=`<label id="lbl${i}_${j}"><input type="radio" name="q${i}" value="${j}"> ${opt}</label>`;
     });
-    if(chosen===q.ans){
-      score++;
-    } else {
-      const note=document.createElement("div");
-      note.className="answer-note";
-      note.innerHTML="✅ Bonne réponse : <strong>"+q.opts[q.ans]+"</strong>";
-      card.appendChild(note);
-    }
+    div.innerHTML=html;
+    quiz.appendChild(div);
   });
-  scoreBox.style.display="block";
-  scoreBox.textContent=`Votre score : ${score} / ${questions.length} 🎯`;
-  btnValidate.style.display="none";
-  btnReset.style.display="block";
-  scoreBox.scrollIntoView({behavior:"smooth"});
+  document.getElementById('score-box').style.display='none';
+  document.getElementById('btn-validate').style.display='block';
+  document.getElementById('btn-reset').style.display='none';
+}
+
+document.getElementById('btn-validate').addEventListener('click',()=>{
+  let score=0;
+  let allAnswered=true;
+  selected.forEach((q,i)=>{
+    const radios=document.querySelectorAll(`input[name="q${i}"]`);
+    let chosen=-1;
+    radios.forEach(r=>{if(r.checked)chosen=parseInt(r.value);});
+    if(chosen===-1){allAnswered=false;}
+  });
+  if(!allAnswered){alert('Veuillez répondre à toutes les questions avant de valider.');return;}
+  selected.forEach((q,i)=>{
+    const radios=document.querySelectorAll(`input[name="q${i}"]`);
+    let chosen=-1;
+    radios.forEach(r=>{if(r.checked)chosen=parseInt(r.value);});
+    radios.forEach(r=>r.disabled=true);
+    const correct=q.ans;
+    if(chosen===correct)score++;
+    for(let j=0;j<q.opts.length;j++){
+      const lbl=document.getElementById(`lbl${i}_${j}`);
+      if(j===chosen && chosen===correct)lbl.className='correct';
+      else if(j===chosen && chosen!==correct)lbl.className='wrong';
+      else if(j===correct)lbl.className='correct';
+    }
+    const info=document.createElement('div');
+    info.className='answer-info';
+    if(chosen===correct){info.textContent='✅ Bonne réponse !';}
+    else{info.textContent=`❌ Mauvaise réponse. La bonne réponse était : "${q.opts[correct]}"`;} 
+    document.getElementById('q'+i).appendChild(info);
+  });
+  const box=document.getElementById('score-box');
+  box.style.display='block';
+  const emoji=score===6?'🏆':score>=4?'🎯':score>=2?'💪':'📚';
+  box.innerHTML=`${emoji} Score : ${score} / 6`;
+  box.scrollIntoView({behavior:'smooth'});
+  document.getElementById('btn-validate').style.display='none';
+  document.getElementById('btn-reset').style.display='block';
 });
 
-btnReset.addEventListener("click",()=>{
-  scoreBox.style.display="none";
-  btnValidate.style.display="block";
-  btnReset.style.display="none";
-  render();
-  window.scrollTo({top:0,behavior:"smooth"});
-});
+document.getElementById('btn-reset').addEventListener('click',render);
 
 render();
 </script>
